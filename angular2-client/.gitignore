@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+/node_modules
+/bower_modules
+/target/*.zip
+.idea/
+*~
+*.iml
+npm-debug.log

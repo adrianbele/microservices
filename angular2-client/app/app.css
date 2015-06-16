@@ -1,0 +1,9 @@
+
+form {
+    position: relative;
+    top: 3em;
+}
+
+form fieldset legend {
+    font-weight: bold;
+}
