@@ -35,6 +35,12 @@
 
     <dependency>
       <groupId>io.vertx</groupId>
+      <artifactId>vertx-auth-jwt</artifactId>
+      <version>${stack.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
       <artifactId>vertx-jdbc-client</artifactId>
       <version>${stack.version}</version>
     </dependency>
