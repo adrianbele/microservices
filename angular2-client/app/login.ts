@@ -1,13 +1,18 @@
-/// <reference path="typings/tsd.d.ts" />
 
-// TypeScript
 import {Component, View, bootstrap} from 'angular2/angular2';
 
-@Component({selector: 'microservices-login-form'})
+// TODO get router working
+//import { RouterOutlet, RouterLink } from 'angular2/router';
+//import {routerInjectables} from 'angular2/router';
 
-@View({templateUrl: "login.html"})
+@Component({selector: 'app'})
 
-class LoginForm {
+@View({
+    // directives: [RouterOutlet, RouterLink],
+    templateUrl: "login.html"
+})
+
+export class LoginForm {
     username: String;
     password: String;
 
@@ -16,7 +21,8 @@ class LoginForm {
         this.password = "";
     }
 
-    login(username: String, password: String) {
+    login(event, username: String, password: String) {
+        event.preventDefault(); // prevent native page refresh
         this.username = username;
         this.password = password;
         console.log("user was logged in as " + username + " with " + password);
@@ -27,5 +33,3 @@ class LoginForm {
         }
     }
 }
-
-bootstrap(LoginForm);

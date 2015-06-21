@@ -1,4 +1,3 @@
-/// <reference path="typings/tsd.d.ts" />
 if (typeof __decorate !== "function") __decorate = function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
     switch (arguments.length) {
@@ -10,14 +9,17 @@ if (typeof __decorate !== "function") __decorate = function (decorators, target,
 if (typeof __metadata !== "function") __metadata = function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-// TypeScript
 var angular2_1 = require('angular2/angular2');
+// TODO get router working
+//import { RouterOutlet, RouterLink } from 'angular2/router';
+//import {routerInjectables} from 'angular2/router';
 var LoginForm = (function () {
     function LoginForm() {
         this.username = "";
         this.password = "";
     }
-    LoginForm.prototype.login = function (username, password) {
+    LoginForm.prototype.login = function (event, username, password) {
+        event.preventDefault(); // prevent native page refresh
         this.username = username;
         this.password = password;
         console.log("user was logged in as " + username + " with " + password);
@@ -26,10 +28,13 @@ var LoginForm = (function () {
         }
     };
     LoginForm = __decorate([
-        angular2_1.Component({ selector: 'microservices-login-form' }),
-        angular2_1.View({ templateUrl: "login.html" }), 
+        angular2_1.Component({ selector: 'app' }),
+        angular2_1.View({
+            // directives: [RouterOutlet, RouterLink],
+            templateUrl: "login.html"
+        }), 
         __metadata('design:paramtypes', [])
     ], LoginForm);
     return LoginForm;
 })();
-angular2_1.bootstrap(LoginForm);
+exports.LoginForm = LoginForm;
