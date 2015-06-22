@@ -1,26 +1,33 @@
 import {Component, View} from 'angular2/angular2';
 
-@Component({selector: 'component-3'})
+//import {Http, httpInjectables} from 'angular2/http';
+
+@Component({
+    selector: 'component-3'
+    //,appInjector: [httpInjectables]
+})
 
 @View({
   templateUrl: './components/login/login.html?v=<%= VERSION %>',
 })
 
 export class Login {
-    username: String;
-    password: String;
+    //http: Http;
+    token: String;
 
-    constructor() {
-        this.username = "";
-        this.password = "";
+    constructor() { // http: Http
+        this.token = null;
+        //this.http = http;
     }
 
     login(event, username: String, password: String) {
-        event.preventDefault(); // prevent native page refresh
-        this.username = username;
-        this.password = password;
-        console.log("user was logged in as " + username + " with " + password);
-
-        // TODO use service that will ask user to logon
+        event.preventDefault(); // prevent native page refresh        
+        console.log("user attempts to log in as " + username + " with " + password);
+        // request a new JWT token from server
+        /*
+        http.post("/api/newToken", {"username": username, "password": password})
+            .map(res => res.text())
+            .subscribe(token => this.token = token);
+        */
     }
 }
