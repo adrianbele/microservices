@@ -18,7 +18,8 @@ export class Tasks {
     this.list = list;
     this.names = list.get();
   }
-  addName(newname) {
+  addName(event, newname) {
+    event.preventDefault(); // prevent native page refresh
     this.list.add(newname.value);
     newname.value = '';
   }
