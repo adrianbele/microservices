@@ -1,0 +1,13 @@
+set -ex
+( # cd microservices
+  # broken for now
+  # mvn clean install
+)
+( cd angular2-client
+  npm install -g typescript@^1.5.0-beta
+  npm install -g tsd
+  tsd query angular2 --action install
+  tsd install es6-promise --save
+  tsd install rx --save
+  tsd install rx-lite --save
+)
