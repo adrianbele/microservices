@@ -1,31 +1,26 @@
-/// <reference path="typings/tsd.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
+import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
+import {RouteConfig, RouterOutlet, RouterLink, routerInjectables} from 'angular2/router';
 
-// TypeScript
-import {Component, View, bootstrap} from 'angular2/angular2';
+import {Home} from './components/home/home';
+import {Tasks} from './components/tasks/tasks';
+import {Login} from './components/login/login';
+import {Settings} from './components/settings/settings';
 
-@Component({selector: 'microservices-login-form'})
+@Component({
+  selector: 'app'
+})
+@RouteConfig([
+  { path: '/', component: Home, as: 'home' },
+  { path: '/tasks', component: Tasks, as: 'tasks' },
+  { path: '/login', component: Login, as: 'login' },
+  { path: '/settings', component: Settings, as: 'settings' }
+])
+@View({
+  templateUrl: './app.html?v=<%= VERSION %>',
+  directives: [RouterOutlet, RouterLink]
+})
+class App {}
 
-@View({templateUrl: "login.html"})
 
-class LoginForm {
-    username: String;
-    password: String;
-
-    constructor() {
-        this.username = "";
-        this.password = "";
-    }
-
-    login(username: String, password: String) {
-        this.username = username;
-        this.password = password;
-        console.log("user was logged in as " + username + " with " + password);
-
-        // TODO use service that will ask user to logon
-        if (username === "Tjerk") {
-
-        }
-    }
-}
-
-bootstrap(LoginForm);
+bootstrap(App, [routerInjectables]);
