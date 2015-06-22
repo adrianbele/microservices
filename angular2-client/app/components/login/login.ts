@@ -1,18 +1,12 @@
+import {Component, View} from 'angular2/angular2';
 
-import {Component, View, bootstrap} from 'angular2/angular2';
-
-// TODO get router working
-//import { RouterOutlet, RouterLink } from 'angular2/router';
-//import {routerInjectables} from 'angular2/router';
-
-@Component({selector: 'app'})
+@Component({selector: 'component-3'})
 
 @View({
-    // directives: [RouterOutlet, RouterLink],
-    templateUrl: "login.html"
+  templateUrl: './components/login/login.html?v=<%= VERSION %>',
 })
 
-export class LoginForm {
+export class Login {
     username: String;
     password: String;
 
@@ -28,8 +22,5 @@ export class LoginForm {
         console.log("user was logged in as " + username + " with " + password);
 
         // TODO use service that will ask user to logon
-        if (username === "Tjerk") {
-
-        }
     }
 }

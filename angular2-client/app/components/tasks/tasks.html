@@ -1,0 +1,11 @@
+<h2>Tasks</h2>
+
+<input #newname>
+
+<p>  
+  <button (click)="addName(newname)">Add</button>
+</p>
+
+<ul class="pure-menu-list">
+	<li *ng-for="#name of names" class="pure-menu-item">{{name}}</li>
+</ul>
