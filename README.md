@@ -5,4 +5,13 @@ Basic TODO application,  microservices with Vert.x and Angular.js
 
 ## Next
 
-ToDo ... 
+Use MainApp to run the application
+
+
+
+
+- AngularJS 2
+- Vert.x 3
+- Java 8
+- Maven 3
+
