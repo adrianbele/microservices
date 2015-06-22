@@ -9,7 +9,7 @@
   <version>0.0-SNAPSHOT</version>
 
   <properties>
-    <stack.version>3.0.0-SNAPSHOT</stack.version>
+    <stack.version>3.0.0-milestone6</stack.version>
     <doc.skip>true</doc.skip>
   </properties>
 
@@ -72,5 +72,34 @@
     </pluginManagement>
   </build>
 
+  <profiles>
+    <profile>
+      <id>bintray</id>
+      <activation>
+        <file><missing>no-bintray.marker</missing></file>
+      </activation>
+      <repositories>
+        <repository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>bintray-vertx-downloads</id>
+          <name>bintray</name>
+          <url>http://dl.bintray.com/vertx/downloads</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>bintray-vertx-downloads</id>
+          <name>bintray-plugins</name>
+          <url>http://dl.bintray.com/vertx/downloads</url>
+        </pluginRepository>
+      </pluginRepositories>
+
+    </profile>
+  </profiles>
 
 </project>
