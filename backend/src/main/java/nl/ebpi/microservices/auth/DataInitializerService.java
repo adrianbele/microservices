@@ -1,4 +1,4 @@
-package nl.ebpi.auth;
+package nl.ebpi.microservices.auth;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;

@@ -1,4 +1,4 @@
-package nl.ebpi.auth;
+package nl.ebpi.microservices.webserver;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServerRequest;
@@ -13,8 +13,8 @@ import io.vertx.ext.web.handler.StaticHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AuthService extends AbstractVerticle {
-    private final static Logger LOGGER = Logger.getLogger(AuthService.class.getName());
+public class WebServer extends AbstractVerticle {
+    private final static Logger LOGGER = Logger.getLogger(WebServer.class.getName());
     private JWTAuth jwtAuthProvider;
 
     @Override
@@ -22,13 +22,13 @@ public class AuthService extends AbstractVerticle {
 
         Router router = Router.router(vertx);
 
+
         JsonObject config = new JsonObject().put("keyStore", new JsonObject()
                 .put("path", "keystore.jceks")
                 .put("type", "jceks")
                 .put("password", "secret"));
 
         jwtAuthProvider = JWTAuth.create(vertx, config);
-
 
 
         // protect the API
@@ -46,7 +46,7 @@ public class AuthService extends AbstractVerticle {
         // Serve the non private static pages
         router.route().handler(StaticHandler.create());
         vertx.createHttpServer().requestHandler(router::accept).listen(8080);
-        LOGGER.info(String.format("%s is up and running.", AuthService.class.getName()));
+        LOGGER.info(String.format("%s is up and running.", WebServer.class.getName()));
     }
 
 
@@ -69,11 +69,9 @@ public class AuthService extends AbstractVerticle {
 
 
         } else {
-            req.response().putHeader("location", "/index.html").setStatusCode(302).end();
+            req.response().putHeader("location", "index.html").setStatusCode(302).end();
         }
     }
-
-
 
 
 }
