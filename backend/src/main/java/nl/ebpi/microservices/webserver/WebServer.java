@@ -9,8 +9,6 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.JWTAuthHandler;
 import io.vertx.ext.web.handler.StaticHandler;
-
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WebServer extends AbstractVerticle {
@@ -44,7 +42,7 @@ public class WebServer extends AbstractVerticle {
         });
 
         router.options("/api/*").handler(ctx -> {
-            ctx.response().putHeader("Content-Type", "Access-Control-Allow-Origin: *");
+            ctx.response().putHeader("Access-Control-Allow-Origin","*");
             ctx.response().putHeader("Access-Control-Allow-Methods","HEAD,GET,POST,PUT,DELETE,OPTIONS");
             ctx.response().putHeader("Allow", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
             ctx.response().end();
@@ -65,14 +63,14 @@ public class WebServer extends AbstractVerticle {
             JsonObject authInfo = (new JsonObject()).put("username", username).put("password", password);
             vertx.eventBus().send("login-address", authInfo, reply -> {
                 context.response().putHeader("Content-Type", "text/plain");
-                context.response().putHeader("Content-Type", "Access-Control-Allow-Origin: *");
+                context.response().putHeader("Access-Control-Allow-Origin","*");
                 context.response().putHeader("Access-Control-Allow-Methods","HEAD,GET,POST,PUT,DELETE,OPTIONS");
                 if (reply.succeeded() && "succeed".equals(reply.result().body())) {
                     context.response().end(jwtAuthProvider.generateToken(new JsonObject(), new JWTOptions().setExpiresInSeconds(60)));
 
                 } else {
                     context.response().end("Wrong password");
-                    LOGGER.log(Level.SEVERE, "No replay.");
+                    LOGGER.info("");
                 }
             });
 
