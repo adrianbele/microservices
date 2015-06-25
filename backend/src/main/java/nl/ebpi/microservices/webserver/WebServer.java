@@ -43,6 +43,13 @@ public class WebServer extends AbstractVerticle {
             ctx.response().end("a secret you should keep for yourself...");
         });
 
+        router.options("/api/*").handler(ctx -> {
+            ctx.response().putHeader("Content-Type", "Access-Control-Allow-Origin: *");
+            ctx.response().putHeader("Access-Control-Allow-Methods","HEAD,GET,POST,PUT,DELETE,OPTIONS");
+            ctx.response().putHeader("Allow", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
+            ctx.response().end();
+        });
+
         // Serve the non private static pages
         router.route().handler(StaticHandler.create());
         vertx.createHttpServer().requestHandler(router::accept).listen(8080);
@@ -58,6 +65,8 @@ public class WebServer extends AbstractVerticle {
             JsonObject authInfo = (new JsonObject()).put("username", username).put("password", password);
             vertx.eventBus().send("login-address", authInfo, reply -> {
                 context.response().putHeader("Content-Type", "text/plain");
+                context.response().putHeader("Content-Type", "Access-Control-Allow-Origin: *");
+                context.response().putHeader("Access-Control-Allow-Methods","HEAD,GET,POST,PUT,DELETE,OPTIONS");
                 if (reply.succeeded() && "succeed".equals(reply.result().body())) {
                     context.response().end(jwtAuthProvider.generateToken(new JsonObject(), new JWTOptions().setExpiresInSeconds(60)));
 
