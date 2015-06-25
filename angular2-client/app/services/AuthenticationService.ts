@@ -8,6 +8,6 @@ export const AuthenticationService = {
     * @return Promise object
     */
     getNewToken(username: String, password: String): Promise<any> {
-        return $http.post("http://localhost:8080/api/newToken", {"username": username, "password": password});
+        return $http.get("http://localhost:8080/api/newToken?username=" + username + "&password=" + password);
     }
 }

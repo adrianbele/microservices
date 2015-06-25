@@ -42,7 +42,7 @@ public class WebServer extends AbstractVerticle {
         });
 
         router.options("/api/*").handler(ctx -> {
-            ctx.response().putHeader("Access-Control-Allow-Origin","*");
+            ctx.response().putHeader("Access-Control-Allow-Origin", "*");
             ctx.response().putHeader("Access-Control-Allow-Methods","HEAD,GET,POST,PUT,DELETE,OPTIONS");
             ctx.response().putHeader("Allow", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
             ctx.response().end();
@@ -66,15 +66,14 @@ public class WebServer extends AbstractVerticle {
                 context.response().putHeader("Access-Control-Allow-Origin","*");
                 context.response().putHeader("Access-Control-Allow-Methods","HEAD,GET,POST,PUT,DELETE,OPTIONS");
                 if (reply.succeeded() && "succeed".equals(reply.result().body())) {
+                    LOGGER.info("Good username and password");
                     context.response().end(jwtAuthProvider.generateToken(new JsonObject(), new JWTOptions().setExpiresInSeconds(60)));
 
                 } else {
+                    LOGGER.info("Wrong password");
                     context.response().end("Wrong password");
-                    LOGGER.info("");
                 }
             });
-
-
         } else {
             req.response().putHeader("location", "index.html").setStatusCode(302).end();
         }

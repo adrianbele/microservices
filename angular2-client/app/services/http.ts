@@ -18,11 +18,16 @@ function _sendRequest(url: string, payLoad: any, type: string): Promise<any> {
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
         req.open(type, url);
-        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        // TODO support for content-type inference and handling accordingly
+        req.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
 
         req.onload = function() {
             if (req.status == 200) {
-                resolve(JSON.parse(req.response));
+                if (req.response.startsWith("{")) {
+                    resolve(JSON.parse(req.response));
+                } else {
+                    resolve(req.response);
+                }
             } else {
                 reject(JSON.parse(req.response));
             }
