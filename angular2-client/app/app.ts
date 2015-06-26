@@ -20,7 +20,18 @@ import {Settings} from './components/settings/settings';
   templateUrl: './app.html?v=<%= VERSION %>',
   directives: [RouterOutlet, RouterLink]
 })
-class App {}
+class App {
+    jwt: string;
 
+    constructor() {
+        this.jwt = localStorage.getItem('jwt');
+    }
+
+    logout(event) {
+        event.preventDefault();
+        this.jwt = null;
+        localStorage.removeItem('jwt');
+    }
+}
 
 bootstrap(App, [routerInjectables]);

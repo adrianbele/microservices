@@ -22,7 +22,17 @@ export class Login {
         event.preventDefault(); // prevent native page refresh
         console.log("user attempts to log in as " + username + " with " + password);
         AuthenticationService.getNewToken(username, password).then((data) =>{
-            this.token = data;
+            if (data != null && data.split(".").length === 3) {
+                this.token = data;
+                localStorage.setItem("jwt", data);                
+            } else {
+                this.token = "not a valid token";
+                localStorage.removeItem("jwt");
+            }
+        })
+        .catch((error) => {
+            this.token = error.message;
+            console.log(error.message);
         });
     }
 }
