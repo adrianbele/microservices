@@ -1,10 +1,9 @@
 package nl.ebpi.microservices;
 
 import io.vertx.core.Vertx;
-import io.vertx.ext.web.handler.StaticHandler;
-import io.vertx.ext.web.handler.impl.StaticHandlerImpl;
+import nl.ebpi.microservices.webserver.DataInitializerService;
 import nl.ebpi.microservices.auth.JDBCAuthService;
-import nl.ebpi.microservices.auth.DataInitializerService;
+import nl.ebpi.microservices.taskservice.TaskService;
 import nl.ebpi.microservices.webserver.WebServer;
 
 import java.util.function.Consumer;
@@ -25,14 +24,17 @@ public class MainApp {
 
     private static void runVertx() {
 
-        String pathToClass = "microservices-web/src/main/java/" + MainApp.class.getPackage().getName().replace(".", "/");
+        String pathToClass = "bakend/src/main/java/" + MainApp.class.getPackage().getName().replace(".", "/");
         System.setProperty("vertx.cwd", pathToClass);
+        System.out.println(pathToClass);
 
         Consumer<Vertx> runner = vertx -> {
             try {
+                vertx.deployVerticle(TaskService.class.getName());
                 vertx.deployVerticle(DataInitializerService.class.getName());
                 vertx.deployVerticle(JDBCAuthService.class.getName());
                 vertx.deployVerticle(WebServer.class.getName());
+
 
             } catch (Throwable t) {
                 LOGGER.log(Level.SEVERE, t.getMessage());
