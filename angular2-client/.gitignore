@@ -30,3 +30,7 @@ node_modules
 dist
 dev
 lib
+
+# Editors
+.idea/*
+*.iml
