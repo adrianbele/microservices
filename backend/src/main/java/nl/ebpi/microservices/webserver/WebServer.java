@@ -6,16 +6,14 @@ import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.auth.User;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.JWTAuthHandler;
 import io.vertx.ext.web.handler.StaticHandler;
-import nl.ebpi.microservices.taskservice.TaskService;
-
 import java.util.logging.Logger;
+import nl.ebpi.microservices.taskservice.TaskService;
 
 /**
  * Main http service to handle http requests for the application
@@ -43,9 +41,11 @@ public class WebServer extends AbstractVerticle {
 
         // this is the secret API
         router.get("/test/tasks/:username").handler(this::taskHandler);
+
         router.options("/api/*").handler(ctx -> {
             ctx.response().putHeader("Access-Control-Allow-Origin", "*");
             ctx.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
+            ctx.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
             ctx.response().putHeader("Allow", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
             ctx.response().end();
         });
@@ -65,6 +65,9 @@ public class WebServer extends AbstractVerticle {
             JsonObject actionReplyMessage = resultObject.getJsonObject(TaskService.ACTION_REPLY_MESSAGE_KEY);
 
             ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+            ctx.response().putHeader("Access-Control-Allow-Origin", "*");
+            ctx.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
+            ctx.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
 
             if (actionReplyMessage.getBoolean("failed")) {
                 ctx.response().end(resultObject.getJsonObject(TaskService.ACTION_REPLY_MESSAGE_KEY).encode());
@@ -106,6 +109,7 @@ public class WebServer extends AbstractVerticle {
                 context.response().putHeader("Content-Type", "text/plain");
                 context.response().putHeader("Access-Control-Allow-Origin", "*");
                 context.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
+                context.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
                 if (reply.succeeded() && "succeed".equals(reply.result().body())) {
                     LOGGER.info("Good username and password");
                     context.response().end(jwtAuthProvider.generateToken(new JsonObject().put("sub", username), new JWTOptions().setExpiresInSeconds(60)));
