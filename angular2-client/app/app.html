@@ -2,10 +2,10 @@
 <nav class="pure-menu pure-menu-horizontal">
 	<ul class="pure-menu-list">
 		<li class="pure-menu-item"><a router-link="home" class="pure-menu-link">Home</a></li>
-		<li class="pure-menu-item" [hidden]="jwt === null"><a router-link="tasks" class="pure-menu-link">Tasks</a></li>
-		<li class="pure-menu-item" [hidden]="jwt === null"><a router-link="settings" class="pure-menu-link">Settings</a></li>
-		<li class="pure-menu-item" [hidden]="jwt !== null"><a router-link="login" class="pure-menu-link">Login</a></li>
-		<li class="pure-menu-item" [hidden]="jwt === null"><a href="#" (click)="logout($event)" class="pure-menu-link">Logout</a></li>
+		<li class="pure-menu-item"><a router-link="tasks" class="pure-menu-link">Tasks</a></li>
+		<li class="pure-menu-item"><a router-link="settings" class="pure-menu-link">Settings</a></li>
+		<li class="pure-menu-item"><a router-link="login" class="pure-menu-link">Login</a></li>
+		<li class="pure-menu-item"><a href="#" (click)="logout($event)" class="pure-menu-link">Logout</a></li>
 	</ul>
 </nav>
 

@@ -1,26 +1,27 @@
 import {Component, View, NgFor} from 'angular2/angular2';
 
-import {NamesList} from '../../services/NameList';
+import {TaskService} from '../../services/TaskService';
 
 @Component({
     selector: 'component-2',
-    appInjector: [NamesList]
+    appInjector: [TaskService]
 })
 @View({
     templateUrl: './components/tasks/tasks.html?v=<%= VERSION %>',
     directives: [NgFor]
 })
 export class Tasks {
-    names: Array<string>;
-    list: NamesList;
+    taskService: TaskService;
+    tasks: Array<string>;
 
-    constructor(list: NamesList) {
-        this.list = list;
-        this.names = list.get();
+    constructor(taskService: TaskService) {
+        console.log("tasks.ts constructor");
+        this.taskService = taskService;
+        this.tasks = taskService.get();
     }
-    addName(event, newname) {
+    addTask(event, newname) {
         event.preventDefault(); // prevent native page refresh
-        this.list.add(newname.value);
-        newname.value = '';
+        this.taskService.add(newname.value);
+        newname.value = "";
     }
 }

@@ -1,25 +1,35 @@
 export const $http = {
-    get: function(url: string) {
-        return _sendRequest(url, null, 'GET');
+    get: function(url: string, token: string) {
+        return _sendRequest(url, null, 'GET', token);
     },
-    post: function(url: string, payload: any){
-        return _sendRequest(url, payload, 'POST');
+    post: function(url: string, payload: any, token: string) {
+        return _sendRequest(url, payload, 'POST', token);
     },
-    put: function(url: string, payload: any){
-        return _sendRequest(url, payload, 'PUT');
+    put: function(url: string, payload: any, token: string) {
+        return _sendRequest(url, payload, 'PUT', token);
     },
-    delete: function(url: string, payload: any){
-        return _sendRequest(url, null, 'DELETE');
+    delete: function(url: string, payload: any, token: string) {
+        return _sendRequest(url, null, 'DELETE', token);
     }
 }
 
 // borrowed from https://github.com/afj176/ng2-express-starter/blob/master/public/components/contact/Contact.js#L36
-function _sendRequest(url: string, payLoad: any, type: string): Promise<any> {
+// TODO pass JWT token for subsequent requests
+function _sendRequest(url: string, payLoad: any, type: string, token: string): Promise<any> {
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
         req.open(type, url);
-        // TODO support for content-type inference and handling accordingly
-        req.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+
+        // support for content-type inference and handling accordingly
+        if (payLoad && payLoad.startsWith("{")) {
+            req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        } else {
+            req.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+        }
+        // Send Json Web Token
+        if (token && token !== null) {
+            req.setRequestHeader("Authorization", "Bearer " + token);
+        }
 
         req.onload = function() {
             if (req.status == 200) {

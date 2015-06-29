@@ -15,6 +15,7 @@ export class Login {
     token: String;
 
     constructor() {
+        console.log("login.ts constructor");
         this.token = null;
     }
 
@@ -24,7 +25,7 @@ export class Login {
         AuthenticationService.getNewToken(username, password).then((data) =>{
             if (data != null && data.split(".").length === 3) {
                 this.token = data;
-                localStorage.setItem("jwt", data);                
+                localStorage.setItem("jwt", data);
             } else {
                 this.token = "not a valid token";
                 localStorage.removeItem("jwt");
