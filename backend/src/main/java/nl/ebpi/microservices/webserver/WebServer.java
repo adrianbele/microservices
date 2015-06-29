@@ -1,7 +1,12 @@
 package nl.ebpi.microservices.webserver;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.eventbus.DeliveryOptions;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.eventbus.ReplyException;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
@@ -40,7 +45,7 @@ public class WebServer extends AbstractVerticle {
         router.get("/api/newToken").handler(this::loginHandler);
 
         // this is the secret API
-        router.get("/test/tasks/:username").handler(this::taskHandler);
+        router.get("/api/tasks/:username").handler(this::taskHandler);
 
         router.options("/api/*").handler(ctx -> {
             ctx.response().putHeader("Access-Control-Allow-Origin", "*");
@@ -58,25 +63,40 @@ public class WebServer extends AbstractVerticle {
     }
 
     private void taskHandler(RoutingContext ctx) {
-        // TODO: in the future versions we have to check whether the user is authorized for CRUD actions on the resource id (taskId)
-        vertx.eventBus().send(TaskService.TASK_SERVICE_ADDRESS, ctx.getBodyAsJson(), actionRouter(ctx), reply -> {
+        JsonObject request = new JsonObject();
+        if(null != ctx.getBodyAsJson()) {
+            request = ctx.getBodyAsJson();
+        }
+        request.put("user_id", "1");
+       // System.out.println(ctx.user());
+       vertx.eventBus().send(TaskService.TASK_SERVICE_ADDRESS, request, actionRouter(ctx), resultHandler(ctx));
+    }
 
-            JsonObject resultObject = (JsonObject) reply.result().body();
-            JsonObject actionReplyMessage = resultObject.getJsonObject(TaskService.ACTION_REPLY_MESSAGE_KEY);
+    private Handler<AsyncResult<Message<Object>>> resultHandler(RoutingContext ctx) {
+        return reply -> {
 
-            ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-            ctx.response().putHeader("Access-Control-Allow-Origin", "*");
-            ctx.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
-            ctx.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
-
-            if (actionReplyMessage.getBoolean("failed")) {
-                ctx.response().end(resultObject.getJsonObject(TaskService.ACTION_REPLY_MESSAGE_KEY).encode());
+            if (reply.result().body() instanceof ReplyException) {
+                ReplyException exception = (ReplyException) reply.result().body();
+                Future.failedFuture(exception);
             } else {
 
-                ctx.response().end(resultObject.getJsonObject(TaskService.ACTION_RESULT_KEY).encode());
-            }
-        });
+                JsonObject resultObject = (JsonObject) reply.result().body();
+                JsonObject actionReplyMessage = resultObject.getJsonObject(TaskService.ACTION_REPLY_MESSAGE_KEY);
+                Future.succeededFuture(reply.result());
 
+
+                ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+                ctx.response().putHeader("Access-Control-Allow-Origin", "*");
+                ctx.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
+                ctx.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
+
+                if (actionReplyMessage.getBoolean("failed", false)) {
+                    ctx.response().end(resultObject.getJsonObject(TaskService.ACTION_REPLY_MESSAGE_KEY).encode());
+                } else {
+                    ctx.response().end(resultObject.encode());
+                }
+            }
+        };
     }
 
     private DeliveryOptions actionRouter(RoutingContext ctx) {
@@ -85,12 +105,18 @@ public class WebServer extends AbstractVerticle {
         switch ( method ) {
             case POST:
                 deliveryOptions.addHeader(TaskService.ACTION_KEY, TaskService.ACTION_ADD);
+                break;
             case PUT:
                 deliveryOptions.addHeader(TaskService.ACTION_KEY, TaskService.ACTION_UPDATE);
+                break;
             case DELETE:
                 deliveryOptions.addHeader(TaskService.ACTION_KEY, TaskService.ACTION_REMOVE);
-            default:
+                break;
+            case GET:
                 deliveryOptions.addHeader(TaskService.ACTION_KEY, TaskService.ACTION_RETRIEVE);
+                break;
+            default:
+                deliveryOptions.addHeader("Unsupported Action", method.name());
         }
 
         return deliveryOptions;

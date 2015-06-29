@@ -8,8 +8,6 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
@@ -35,7 +33,6 @@ public class TaskService extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", "tasks_db"));
-
         EventBus eventBus = vertx.eventBus();
         eventBus.consumer(TASK_SERVICE_ADDRESS, message -> {
             handleQuery(message);
@@ -54,85 +51,91 @@ public class TaskService extends AbstractVerticle {
 
         switch ( action ) {
             case ACTION_UPDATE:
-                JsonObject updateTask = update(message, actionReplyMessage);
-                message.reply(updateTask);
+                update(message, actionReplyMessage);
+                break;
             case ACTION_ADD:
-                JsonObject addTask = addTask(message, actionReplyMessage);
-                message.reply(addTask);
+                addTask(message, actionReplyMessage);
+                break;
             case ACTION_REMOVE:
-                JsonObject removeTask = removeTask(message, actionReplyMessage);
-                message.reply(removeTask);
+                removeTask(message, actionReplyMessage);
+                break;
             case ACTION_RETRIEVE:
-                JsonObject retrieveTasks = retrieveTasksByUserId(message, actionReplyMessage);
-                message.reply(retrieveTasks);
+                retrieveTasksByUserId(message, actionReplyMessage);
+                break;
             default:
-                LOGGER.info(format("Unsupported operation '%s'.", action));
                 actionReplyMessage.put("failure-case", "Unknown action");
                 actionReplyMessage.put("failed", "true");
+                LOGGER.info(format("Unsupported operation '%s'.", action));
                 message.reply(new JsonArray().add(actionReplyMessage));
         }
 
 
     }
 
-    private JsonObject removeTask(final Message<Object> messageBody, final JsonObject actionReplyMessage) {
+    private void removeTask(final Message<Object> messageBody, final JsonObject actionReplyMessage) {
         final JsonObject resultObject = new JsonObject().put(ACTION_REPLY_MESSAGE_KEY, actionReplyMessage);
-        // Remove a document from mongo.
-        // messageBody contains the task id
-        mongoClient.removeOne("tasks", new JsonObject().put("_id", messageBody.body()), lookup -> {
+        JsonObject requestJson = (JsonObject) messageBody.body();
+        mongoClient.removeOne("tasks", new JsonObject().put("_id", requestJson.getValue("_id")), lookup -> {
             // error handling
             errorHandling(actionReplyMessage, lookup);
-
+            messageBody.reply(resultObject);
 
         });
 
-        return resultObject;
     }
 
-    private JsonObject update(final Message<Object> messageBody, final JsonObject actionReplyMessage) {
+    private void update(final Message<Object> messageBody, final JsonObject actionReplyMessage) {
         final JsonObject resultObject = new JsonObject().put(ACTION_REPLY_MESSAGE_KEY, actionReplyMessage);
-        // Create a new document on mongo.
-        // insert into mongo
+
+        JsonObject requestJson = (JsonObject) messageBody.body();
 
         JsonObject taksObject = (JsonObject) messageBody.body();
-        mongoClient.replace("tasks", new JsonObject().put("_id", messageBody.body()), taksObject, lookup -> {
+        mongoClient.replace("tasks", new JsonObject().put("_id", requestJson.getValue("_id")), taksObject, lookup -> {
             // error handling
             errorHandling(actionReplyMessage, lookup);
+            messageBody.reply(resultObject);
 
         });
-        return resultObject;
+
 
     }
 
 
-    private JsonObject addTask(final Message<Object> messageBody, final JsonObject actionReplyMessage) {
+    private void addTask(final Message<Object> messageBody, final JsonObject actionReplyMessage) {
         final JsonObject resultObject = new JsonObject().put(ACTION_REPLY_MESSAGE_KEY, actionReplyMessage);
+        JsonObject requestJson = (JsonObject) messageBody.body();
         // Create a new document on mongo.
         // insert into mongo
-        mongoClient.insert("tasks", (JsonObject) messageBody.body(), lookup -> {
+        mongoClient.insert("tasks", requestJson, lookup -> {
             // error handling
-            errorHandling(actionReplyMessage, lookup);
 
             resultObject.put(ACTION_RESULT_KEY, new JsonObject().put("_id", lookup.result()));
+            messageBody.reply(resultObject);
         });
-        return resultObject;
+
 
     }
 
 
-    private JsonObject retrieveTasksByUserId(final Message<Object> messageBody, final JsonObject actionReplyMessage) {
-        final JsonObject resultObject = new JsonObject().put(ACTION_REPLY_MESSAGE_KEY, actionReplyMessage);
-        JsonObject body = (JsonObject) messageBody.body();
-        mongoClient.find("tasks", new JsonObject().put("_id", messageBody.body()), lookup -> {
+    private void retrieveTasksByUserId(final Message<Object> messageBody, final JsonObject actionReplyMessage) {
+
+        JsonObject requestJson = (JsonObject) messageBody.body();
+        mongoClient.find("tasks", requestJson, lookup -> {
             // error handling
             errorHandling(actionReplyMessage, lookup);
-            JsonArray resObject = new JsonArray();
-            lookup.result().stream().map(result -> resObject.add(result));
-            resultObject.put(ACTION_RESULT_KEY, resultObject);
+            final JsonArray resObject = new JsonArray();
+            for (JsonObject o : lookup.result()) {
+                resObject.add(o);
+            }
+            final JsonObject resultObject = new JsonObject().put(ACTION_REPLY_MESSAGE_KEY, actionReplyMessage);
+            resultObject.put(ACTION_RESULT_KEY, resObject);
+
+            messageBody.reply(resultObject);
+
 
         });
 
-        return resultObject;
+
     }
 
 
@@ -144,7 +147,6 @@ public class TaskService extends AbstractVerticle {
 
         }
     }
-
 
 
 }
