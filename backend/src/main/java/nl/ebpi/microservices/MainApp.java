@@ -28,7 +28,12 @@ public class MainApp {
         Consumer<Vertx> runner = vertx -> {
             try {
                 vertx.deployVerticle("nl.ebpi.microservices.taskservice.TaskService");
-                vertx.deployVerticle("nl.ebpi.microservices.webserver.DataInitializerService");
+                try {
+                    vertx.deployVerticle("nl.ebpi.microservices.taskservice.TaskService");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                vertx.deployVerticle("nl.ebpi.microservices.database.DataInitializerService");
                 vertx.deployVerticle("nl.ebpi.microservices.auth.JDBCAuthService");
                 vertx.deployVerticle("nl.ebpi.microservices.webserver.WebServer");
 

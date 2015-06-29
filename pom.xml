@@ -14,6 +14,9 @@
 
     <modules>
         <module>backend</module>
+        <module>jdbc-auth-service</module>
+        <module>data-initializer-service</module>
+        <module>task-service</module>
     </modules>
 
 </project>
