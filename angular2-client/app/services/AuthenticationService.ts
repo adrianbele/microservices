@@ -9,5 +9,13 @@ export const AuthenticationService = {
     */
     getNewToken(username: String, password: String): Promise<any> {
         return $http.get("http://localhost:8080/api/newToken?username=" + username + "&password=" + password, null);
+    },
+
+    /**
+    * TEST
+    */
+    getProtectedData(token: String): Promise<any> {
+        return $http.get("http://localhost:8080/test/tasks", token);
     }
+
 }
