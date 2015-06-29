@@ -8,7 +8,6 @@ import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.ReplyException;
 import io.vertx.core.http.HttpHeaders;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTAuth;
@@ -17,8 +16,8 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.JWTAuthHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+
 import java.util.logging.Logger;
-import nl.ebpi.microservices.taskservice.TaskService;
 
 /**
  * Main http service to handle http requests for the application
@@ -45,7 +44,7 @@ public class WebServer extends AbstractVerticle {
         router.get("/api/newToken").handler(this::loginHandler);
 
         // this is the secret API
-        router.get("/api/tasks/:username").handler(this::taskHandler);
+        router.get("/test/tasks/:username").handler(this::taskHandler);
 
         router.options("/api/*").handler(ctx -> {
             ctx.response().putHeader("Access-Control-Allow-Origin", "*");
@@ -69,7 +68,7 @@ public class WebServer extends AbstractVerticle {
         }
         request.put("user_id", "1");
        // System.out.println(ctx.user());
-       vertx.eventBus().send(TaskService.TASK_SERVICE_ADDRESS, request, actionRouter(ctx), resultHandler(ctx));
+       vertx.eventBus().send("task-service-address", request, new DeliveryOptions().addHeader("action", ctx.request().method().name()), resultHandler(ctx));
     }
 
     private Handler<AsyncResult<Message<Object>>> resultHandler(RoutingContext ctx) {
@@ -81,7 +80,7 @@ public class WebServer extends AbstractVerticle {
             } else {
 
                 JsonObject resultObject = (JsonObject) reply.result().body();
-                JsonObject actionReplyMessage = resultObject.getJsonObject(TaskService.ACTION_REPLY_MESSAGE_KEY);
+                JsonObject actionReplyMessage = resultObject.getJsonObject("actionReplyMessage");
                 Future.succeededFuture(reply.result());
 
 
@@ -91,7 +90,7 @@ public class WebServer extends AbstractVerticle {
                 ctx.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
 
                 if (actionReplyMessage.getBoolean("failed", false)) {
-                    ctx.response().end(resultObject.getJsonObject(TaskService.ACTION_REPLY_MESSAGE_KEY).encode());
+                    ctx.response().end(actionReplyMessage.encode());
                 } else {
                     ctx.response().end(resultObject.encode());
                 }
@@ -99,30 +98,7 @@ public class WebServer extends AbstractVerticle {
         };
     }
 
-    private DeliveryOptions actionRouter(RoutingContext ctx) {
-        DeliveryOptions deliveryOptions = new DeliveryOptions();
-        HttpMethod method = ctx.request().method();
-        switch ( method ) {
-            case POST:
-                deliveryOptions.addHeader(TaskService.ACTION_KEY, TaskService.ACTION_ADD);
-                break;
-            case PUT:
-                deliveryOptions.addHeader(TaskService.ACTION_KEY, TaskService.ACTION_UPDATE);
-                break;
-            case DELETE:
-                deliveryOptions.addHeader(TaskService.ACTION_KEY, TaskService.ACTION_REMOVE);
-                break;
-            case GET:
-                deliveryOptions.addHeader(TaskService.ACTION_KEY, TaskService.ACTION_RETRIEVE);
-                break;
-            default:
-                deliveryOptions.addHeader("Unsupported Action", method.name());
-        }
 
-        return deliveryOptions;
-
-
-    }
 
 
     private void loginHandler(RoutingContext context) {

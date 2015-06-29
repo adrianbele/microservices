@@ -1,10 +1,7 @@
 package nl.ebpi.microservices;
 
 import io.vertx.core.Vertx;
-import nl.ebpi.microservices.webserver.DataInitializerService;
-import nl.ebpi.microservices.auth.JDBCAuthService;
-import nl.ebpi.microservices.taskservice.TaskService;
-import nl.ebpi.microservices.webserver.WebServer;
+
 
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -14,7 +11,7 @@ import java.util.logging.Logger;
  * Microservices application main class which runs the application
  */
 public class MainApp {
-    private final static Logger LOGGER = Logger.getLogger(DataInitializerService.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(MainApp.class.getName());
 
     // Convenience method to run the application
     public static void main(String[] args) {
@@ -30,10 +27,10 @@ public class MainApp {
 
         Consumer<Vertx> runner = vertx -> {
             try {
-                vertx.deployVerticle(TaskService.class.getName());
-                vertx.deployVerticle(DataInitializerService.class.getName());
-                vertx.deployVerticle(JDBCAuthService.class.getName());
-                vertx.deployVerticle(WebServer.class.getName());
+                vertx.deployVerticle("nl.ebpi.microservices.taskservice.TaskService");
+                vertx.deployVerticle("nl.ebpi.microservices.webserver.DataInitializerService");
+                vertx.deployVerticle("nl.ebpi.microservices.auth.JDBCAuthService");
+                vertx.deployVerticle("nl.ebpi.microservices.webserver.WebServer");
 
 
             } catch (Throwable t) {

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import static java.lang.String.format;
 
 /**
- * Creates and initialises the data
+ * Creates and initialises demo data
  */
 public class DataInitializerService extends AbstractVerticle {
     private final static Logger LOGGER = Logger.getLogger(DataInitializerService.class.getName());
@@ -69,16 +69,6 @@ public class DataInitializerService extends AbstractVerticle {
         }
 
 
-    }
-
-    private void execute(SQLConnection conn, String sql, Handler<Void> done) {
-        conn.execute(sql, res -> {
-            if (res.failed()) {
-                throw new RuntimeException(res.cause());
-            }
-
-            done.handle(null);
-        });
     }
 
     private void initializeTasks() {
