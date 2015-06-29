@@ -26,9 +26,9 @@ function _sendRequest(url: string, payLoad: any, type: string, token: string): P
         } else {
             req.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
         }
-        // For example: send Json Web Token
+        // Send Json Web Token
         if (token && token !== null) {
-            req.setRequestHeader("X-Access-Token", token);
+            req.setRequestHeader("Authorization", "Bearer " + token);
         }
 
         req.onload = function() {
