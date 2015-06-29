@@ -44,7 +44,7 @@ function _sendRequest(url: string, payLoad: any, type: string, token: string): P
         };
 
         req.onerror = function() {
-            reject(JSON.parse(req.response));
+            reject(req.response);
         };
 
         if (payLoad) {

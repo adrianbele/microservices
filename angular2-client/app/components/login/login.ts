@@ -26,6 +26,13 @@ export class Login {
             if (data != null && data.split(".").length === 3) {
                 this.token = data;
                 localStorage.setItem("jwt", data);
+
+                // TEST
+                AuthenticationService.getProtectedData(data).then((data2) =>{
+                    console.log("SERVER: " + data2);
+                });
+                // EOT
+
             } else {
                 this.token = "not a valid token";
                 localStorage.removeItem("jwt");
