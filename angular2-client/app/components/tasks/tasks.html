@@ -6,10 +6,10 @@
 
         <input #newname placeholder="description ..." />
 
-        <button (click)="addName($event, newname)" class="pure-button pure-button-primary">add</button>
+        <button (click)="addTask($event, newname)" class="pure-button pure-button-primary">add</button>
     </fieldset>
 </form>
 
 <ul class="pure-menu-list">
-    <li *ng-for="#name of names" class="pure-menu-item">{{name}}</li>
+    <li *ng-for="#task of tasks" class="pure-menu-item">{{task}}</li>
 </ul>

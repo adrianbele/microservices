@@ -24,6 +24,7 @@ class App {
     jwt: string;
 
     constructor() {
+        console.log("app.ts constructor");
         this.jwt = localStorage.getItem('jwt');
     }
 
