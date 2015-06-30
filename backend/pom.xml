@@ -69,7 +69,7 @@
         </dependency>
         <dependency>
             <groupId>nl.ebpi.microservices</groupId>
-            <artifactId>demo-data-initializer</artifactId>
+            <artifactId>data-initializer-service</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
