@@ -1,3 +1,6 @@
+
+// TODO make string an optional parameter with ''?''
+
 export const $http = {
     get: function(url: string, token: string) {
         return _sendRequest(url, null, 'GET', token);
@@ -13,15 +16,17 @@ export const $http = {
     }
 }
 
-// borrowed from https://github.com/afj176/ng2-express-starter/blob/master/public/components/contact/Contact.js#L36
-// TODO pass JWT token for subsequent requests
+/**
+* @param payload is a JavaScript/JSON Object
+* @param type is the HTTP verb as String
+*/
 function _sendRequest(url: string, payLoad: any, type: string, token: string): Promise<any> {
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
         req.open(type, url);
 
         // support for content-type inference and handling accordingly
-        if (payLoad && payLoad.startsWith("{")) {
+        if (payLoad && (typeof payLoad !== "string")) {
             req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         } else {
             req.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");

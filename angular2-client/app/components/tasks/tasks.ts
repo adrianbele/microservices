@@ -1,5 +1,6 @@
 import {Component, View, NgFor} from 'angular2/angular2';
 
+import {Task} from 'components/tasks/task';
 import {TaskService} from '../../services/TaskService';
 
 @Component({
@@ -12,16 +13,24 @@ import {TaskService} from '../../services/TaskService';
 })
 export class Tasks {
     taskService: TaskService;
-    tasks: Array<string>;
+    tasks: Array<any>;
+    nrOfTasks: number;
 
     constructor(taskService: TaskService) {
         console.log("tasks.ts constructor");
         this.taskService = taskService;
-        this.tasks = taskService.get();
+        let token = localStorage.getItem("jwt");
+        this.taskService.getTasks(token).then((obj) =>{
+            this.tasks = obj.actionResult;
+            this.nrOfTasks = this.tasks.length;
+            console.log("finished getting tasks: " + this.tasks.length);
+        });
     }
     addTask(event, newname) {
         event.preventDefault(); // prevent native page refresh
-        this.taskService.add(newname.value);
+        let token = localStorage.getItem("jwt");
+        let newTask = new Task(newname.value);
+        this.taskService.addTask(newTask, token);
         newname.value = "";
     }
 }

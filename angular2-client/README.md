@@ -13,5 +13,3 @@ Angular 2.0 client for vert.x server application
 
 # TODO
 - create BETTER feedback for authentication call
-- create todolist component
-- add REST calls to api so user can add tasks to todolist

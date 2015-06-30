@@ -11,5 +11,7 @@
 </form>
 
 <ul class="pure-menu-list">
-    <li *ng-for="#task of tasks" class="pure-menu-item">{{task}}</li>
+    <li *ng-for="#task of tasks" class="pure-menu-item">{{task.title}}</li>
 </ul>
+
+<p>Number of tasks: {{nrOfTasks}}</p>

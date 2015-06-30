@@ -1,7 +1,6 @@
-
 import {$http} from "services/http";
 
-export const AuthenticationService = {
+export class AuthenticationService {
 
     /**
     * Call REST api to request a JWT token
@@ -9,13 +8,5 @@ export const AuthenticationService = {
     */
     getNewToken(username: String, password: String): Promise<any> {
         return $http.get("http://localhost:8080/api/newToken?username=" + username + "&password=" + password, null);
-    },
-
-    /**
-    * TEST
-    */
-    getProtectedData(token: String): Promise<any> {
-        return $http.get("http://localhost:8080/test/tasks", token);
     }
-
 }

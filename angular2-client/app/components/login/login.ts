@@ -1,10 +1,9 @@
 import {Component, View} from 'angular2/angular2';
-
 import {AuthenticationService} from '../../services/AuthenticationService';
 
 @Component({
-    selector: 'component-3'
-    // , appInjector: [AuthenticationService]
+    selector: 'component-3',
+    appInjector: [AuthenticationService]
 })
 
 @View({
@@ -12,34 +11,29 @@ import {AuthenticationService} from '../../services/AuthenticationService';
 })
 
 export class Login {
-    token: String;
+    message: String;
+    authenticationService: AuthenticationService;
 
-    constructor() {
+    constructor(authenticationService: AuthenticationService) {
         console.log("login.ts constructor");
-        this.token = null;
+        this.authenticationService = authenticationService;
+        this.message = null;
     }
 
     login(event, username: String, password: String) {
         event.preventDefault(); // prevent native page refresh
         console.log("user attempts to log in as " + username + " with " + password);
-        AuthenticationService.getNewToken(username, password).then((data) =>{
+        this.authenticationService.getNewToken(username, password).then((data) =>{
             if (data != null && data.split(".").length === 3) {
-                this.token = data;
+                this.message = "You are logged in to the system";
                 localStorage.setItem("jwt", data);
-
-                // TEST
-                AuthenticationService.getProtectedData(data).then((data2) =>{
-                    console.log("SERVER: " + data2);
-                });
-                // EOT
-
             } else {
-                this.token = "not a valid token";
+                this.message = "server did not send correct token";
                 localStorage.removeItem("jwt");
             }
         })
         .catch((error) => {
-            this.token = error.message;
+            this.message = error.message;
             console.log(error.message);
         });
     }

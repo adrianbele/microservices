@@ -1,29 +1,19 @@
 import {$http} from "services/http";
 
-// TODO make a singleton
-// TODO use http object
 export class TaskService {
-    tasks: Array<string>;// = ['Dishes', 'Groceries', 'Laundry', 'Train'];
 
-    constructor() {
-        console.log("TaskService.ts constructor");
-
-        let token = localStorage.getItem("jwt");
-
-        this.getTasks(token).then((obj) =>{
-            console.log("SERVER: " + obj);
-            this.tasks = obj;
-        });
-    }
-
-    get() {
-        return this.tasks;
-    }
-    add(value) {
-        this.tasks.push(value);
-    }
-
-    private getTasks(token: String): Promise<any> {
+    /**
+    * @returns a list of Task obects as a JavaScript Array
+    */
+    public getTasks(token: any): Promise<any> {
         return $http.get("http://localhost:8080/api/tasks/tim", token);
+    }
+
+    /**
+    * @param obj is a JavaScript Object
+    * @returns server _id of newly created task
+    */
+    public addTask(obj: any, token: any): Promise<any> {
+        return $http.post("http://localhost:8080/api/tasks/tim", obj, token);
     }
 }
