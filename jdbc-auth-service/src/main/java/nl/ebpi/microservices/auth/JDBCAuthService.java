@@ -24,9 +24,11 @@ public class JDBCAuthService extends AbstractVerticle {
 
         eventBus.consumer("login-address", message -> {
 
+            LOGGER.info("authenticate with message ["+message.body()+"]");
 
             JsonObject user = (JsonObject) message.body();
             authProvider.authenticate(user, (res) -> {
+                LOGGER.info("authenticate as ["+user.getString("username")+"]");
                 if (res.succeeded()) {
                     message.reply("succeed");
                 } else {

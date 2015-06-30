@@ -44,16 +44,12 @@ public class WebServer extends AbstractVerticle {
         router.get("/api/newToken").handler(this::loginHandler);
 
         // this is the secret API
-        router.get("/test/tasks/:username").handler(this::taskHandler);
+        router.get("/api/tasks/:username").handler(this::taskHandler);
 
         router.options("/api/*").handler(ctx -> {
-            ctx.response().putHeader("Access-Control-Allow-Origin", "*");
-            ctx.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
-            ctx.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
-            ctx.response().putHeader("Allow", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
+            addCorsHeaders(ctx);
             ctx.response().end();
         });
-
 
         // Serve the non private static pages
         router.route().handler(StaticHandler.create());
@@ -83,11 +79,8 @@ public class WebServer extends AbstractVerticle {
                 JsonObject actionReplyMessage = resultObject.getJsonObject("actionReplyMessage");
                 Future.succeededFuture(reply.result());
 
-
                 ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-                ctx.response().putHeader("Access-Control-Allow-Origin", "*");
-                ctx.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
-                ctx.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
+                addCorsHeaders(ctx);
 
                 if (actionReplyMessage.getBoolean("failed", false)) {
                     ctx.response().end(actionReplyMessage.encode());
@@ -98,9 +91,6 @@ public class WebServer extends AbstractVerticle {
         };
     }
 
-
-
-
     private void loginHandler(RoutingContext context) {
         HttpServerRequest req = context.request();
         String username = req.getParam("username");
@@ -109,9 +99,7 @@ public class WebServer extends AbstractVerticle {
             JsonObject authInfo = (new JsonObject()).put("username", username).put("password", password);
             vertx.eventBus().send("login-address", authInfo, reply -> {
                 context.response().putHeader("Content-Type", "text/plain");
-                context.response().putHeader("Access-Control-Allow-Origin", "*");
-                context.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
-                context.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
+                addCorsHeaders(context);
                 if (reply.succeeded() && "succeed".equals(reply.result().body())) {
                     LOGGER.info("Good username and password");
                     context.response().end(jwtAuthProvider.generateToken(new JsonObject().put("sub", username), new JWTOptions().setExpiresInSeconds(60)));
@@ -126,5 +114,10 @@ public class WebServer extends AbstractVerticle {
         }
     }
 
-
+    private void addCorsHeaders(RoutingContext ctx) {
+        ctx.response().putHeader("Access-Control-Allow-Origin", "*");
+        ctx.response().putHeader("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
+        ctx.response().putHeader("Access-Control-Allow-Headers","Authorization, Content-Type");
+        ctx.response().putHeader("Allow", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
+    }
 }
