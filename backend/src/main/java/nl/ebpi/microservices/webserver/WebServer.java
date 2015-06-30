@@ -45,6 +45,7 @@ public class WebServer extends AbstractVerticle {
 
         // this is the secret API
         router.get("/api/tasks/:username").handler(this::taskHandler);
+        router.post("/api/tasks/:username").handler(this::taskHandler);
 
         router.options("/api/*").handler(ctx -> {
             addCorsHeaders(ctx);

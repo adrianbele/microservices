@@ -20,17 +20,25 @@ export class Tasks {
         console.log("tasks.ts constructor");
         this.taskService = taskService;
         let token = localStorage.getItem("jwt");
-        this.taskService.getTasks(token).then((obj) =>{
+
+        this.taskService.getTasks(token).then((obj) => {
             this.tasks = obj.actionResult;
             this.nrOfTasks = this.tasks.length;
             console.log("finished getting tasks: " + this.tasks.length);
         });
+        // TODO catch error
     }
+
     addTask(event, newname) {
         event.preventDefault(); // prevent native page refresh
         let token = localStorage.getItem("jwt");
         let newTask = new Task(newname.value);
-        this.taskService.addTask(newTask, token);
-        newname.value = "";
+
+        this.taskService.addTask(newTask, token).then((obj) => {
+            newTask.setId(obj.actionResult._id);
+            this.tasks.push(newTask);
+            newname.value = "";
+        });
+        // TODO catch error
     }
 }

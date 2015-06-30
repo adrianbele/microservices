@@ -5,7 +5,7 @@
 */
 export class Task {
     description: number;
-    _id: number;    
+    _id: number;
     assignee: string;
     title: string
     user_id: number;
@@ -13,5 +13,9 @@ export class Task {
     constructor(title: string, _id?: number) {
         this.title = title;
         this._id = _id;
+    }
+
+    public setId(id: number) {
+        this._id = id;
     }
 }
