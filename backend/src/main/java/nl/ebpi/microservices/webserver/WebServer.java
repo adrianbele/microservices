@@ -103,7 +103,7 @@ public class WebServer extends AbstractVerticle {
                 addCorsHeaders(context);
                 if (reply.succeeded() && "succeed".equals(reply.result().body())) {
                     LOGGER.info("Good username and password");
-                    context.response().end(jwtAuthProvider.generateToken(new JsonObject().put("sub", username), new JWTOptions().setExpiresInSeconds(60)));
+                    context.response().end(jwtAuthProvider.generateToken(new JsonObject().put("sub", username), new JWTOptions().setExpiresInSeconds(3600)));
 
                 } else {
                     LOGGER.info("Wrong password");
