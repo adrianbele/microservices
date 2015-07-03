@@ -1,6 +1,6 @@
 {
   "name": "angular2-client",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "GUI for microservices demo project",
   "repository": "https://github.com/adrianbele/microservices/tree/master/angular2-client",
   "scripts": {

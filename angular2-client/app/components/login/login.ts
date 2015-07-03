@@ -28,11 +28,11 @@ export class Login {
         this.authenticationService.getNewToken(username, password).then((data) => {
             if (data != null && data.split(".").length === 3) {
                 this.message = "You are logged in to the system.";
-                this.logIn(data);
+                this.authenticationService.logIn(data);
                 this.eventManager.publish("authenticationStateChange", true);
             } else {
                 this.message = "server did not send correct token.";
-                this.logOut();
+                this.authenticationService.logOut();
                 this.eventManager.publish("authenticationStateChange", false);
             }
         })
@@ -41,14 +41,5 @@ export class Login {
             console.log(error.message);
             this.eventManager.publish("authenticationStateChange", false);
         });
-    }
-
-    logIn(token: any) {
-        this.authenticationService.logIn(token);
-    }
-
-    logOut() {
-        this.authenticationService.logOut();
-        this.eventManager.publish("authenticationStateChange", false);
     }
 }
