@@ -1,5 +1,6 @@
 import {Component, View} from 'angular2/angular2';
 import {AuthenticationService} from '../../services/AuthenticationService';
+import {EventManager} from "utils/eventbus/EventManager";
 
 @Component({
     selector: 'component-3',
@@ -13,28 +14,41 @@ import {AuthenticationService} from '../../services/AuthenticationService';
 export class Login {
     message: String;
     authenticationService: AuthenticationService;
+    eventManager: EventManager;
 
     constructor(authenticationService: AuthenticationService) {
-        console.log("login.ts constructor");
-        this.authenticationService = authenticationService;
+        if (!this.authenticationService) this.authenticationService = authenticationService;
+        this.eventManager = EventManager.getInstance(); // singleton, do not use DI
         this.message = null;
     }
 
     login(event, username: String, password: String) {
         event.preventDefault(); // prevent native page refresh
         console.log("user attempts to log in as " + username + " with " + password);
-        this.authenticationService.getNewToken(username, password).then((data) =>{
+        this.authenticationService.getNewToken(username, password).then((data) => {
             if (data != null && data.split(".").length === 3) {
-                this.message = "You are logged in to the system";
-                localStorage.setItem("jwt", data);
+                this.message = "You are logged in to the system.";
+                this.logIn(data);
+                this.eventManager.publish("authenticationStateChange", true);
             } else {
-                this.message = "server did not send correct token";
-                localStorage.removeItem("jwt");
+                this.message = "server did not send correct token.";
+                this.logOut();
+                this.eventManager.publish("authenticationStateChange", false);
             }
         })
         .catch((error) => {
             this.message = error.message;
             console.log(error.message);
+            this.eventManager.publish("authenticationStateChange", false);
         });
+    }
+
+    logIn(token: any) {
+        this.authenticationService.logIn(token);
+    }
+
+    logOut() {
+        this.authenticationService.logOut();
+        this.eventManager.publish("authenticationStateChange", false);
     }
 }

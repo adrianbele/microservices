@@ -1,4 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
+
 import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
 import {RouteConfig, RouterOutlet, RouterLink, routerInjectables} from 'angular2/router';
 
@@ -7,8 +8,12 @@ import {Tasks} from './components/tasks/tasks';
 import {Login} from './components/login/login';
 import {Settings} from './components/settings/settings';
 
+import {AuthenticationService} from 'services/AuthenticationService';
+import {EventManager} from "utils/eventbus/EventManager";
+
 @Component({
-  selector: 'app'
+    selector: 'app',
+    appInjector: [AuthenticationService]
 })
 @RouteConfig([
   { path: '/', component: Home, as: 'home' },
@@ -21,18 +26,26 @@ import {Settings} from './components/settings/settings';
   directives: [RouterOutlet, RouterLink]
 })
 class App {
-    jwt: string;
+    authenticationService: AuthenticationService;
+    public loggedIn: boolean;
 
-    constructor() {
-        console.log("app.ts constructor");
-        this.jwt = localStorage.getItem('jwt');
+    constructor(authenticationService: AuthenticationService) {
+        this.authenticationService = authenticationService;
+        let eventManager = EventManager.getInstance();
+
+        this.loggedIn = authenticationService.isLoggedIn();
+        eventManager.subscribe("authenticationStateChange", (msg: boolean) => {
+            this.loggedIn = msg;
+            console.log("App caught event, loggedIn: " + msg);
+        });
     }
 
     logout(event) {
         event.preventDefault();
-        this.jwt = null;
-        localStorage.removeItem('jwt');
+        // TODO perhaps throw event so the service does not need to be called
+        this.authenticationService.logOut();
+        this.loggedIn = false;
     }
 }
 
-bootstrap(App, [routerInjectables]);
+bootstrap(App, [routerInjectables, AuthenticationService]);
