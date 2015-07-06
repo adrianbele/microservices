@@ -1,0 +1,13 @@
+
+<form class="pure-form pure-form-stacked">
+    <fieldset>
+        <legend>Login to the system</legend>
+        <label for="username">username</label>
+        <input id="username" type="text" #username />
+        <label for="password">password</label>
+        <input id="password" type="password" #password />
+        <button (click)="login($event, username.value, password.value)" class="pure-button pure-button-primary">login</button>
+    </fieldset>
+</form>
+
+<p [hidden]="!message" class="message-container">{{message}}</p>

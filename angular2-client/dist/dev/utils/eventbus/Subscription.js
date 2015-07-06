@@ -1,0 +1,13 @@
+/**
+ * Created by tvalentijn on 7/2/15.
+ */
+var Subscription = (function () {
+    function Subscription(id, callback) {
+        this.id = id;
+        this.callback = callback;
+    }
+    return Subscription;
+})();
+exports.Subscription = Subscription;
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInV0aWxzL2V2ZW50YnVzL1N1YnNjcmlwdGlvbi50cyJdLCJuYW1lcyI6WyJTdWJzY3JpcHRpb24iLCJTdWJzY3JpcHRpb24uY29uc3RydWN0b3IiXSwibWFwcGluZ3MiOiJBQUFBOztHQUVHO0FBRUg7SUFDSUEsc0JBQ1dBLEVBQVVBLEVBQ1ZBLFFBQWlDQTtRQURqQ0MsT0FBRUEsR0FBRkEsRUFBRUEsQ0FBUUE7UUFDVkEsYUFBUUEsR0FBUkEsUUFBUUEsQ0FBeUJBO0lBQzVDQSxDQUFDQTtJQUNMRCxtQkFBQ0E7QUFBREEsQ0FMQSxBQUtDQSxJQUFBO0FBTFksb0JBQVksZUFLeEIsQ0FBQSIsImZpbGUiOiJ1dGlscy9ldmVudGJ1cy9TdWJzY3JpcHRpb24uanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIENyZWF0ZWQgYnkgdHZhbGVudGlqbiBvbiA3LzIvMTUuXG4gKi9cblxuZXhwb3J0IGNsYXNzIFN1YnNjcmlwdGlvbiB7XG4gICAgY29uc3RydWN0b3IgKFxuICAgICAgICBwdWJsaWMgaWQ6IG51bWJlcixcbiAgICAgICAgcHVibGljIGNhbGxiYWNrOiAocGF5bG9hZD86IGFueSkgPT4gdm9pZCkge1xuICAgIH1cbn0iXSwic291cmNlUm9vdCI6Ii9zb3VyY2UvIn0=
