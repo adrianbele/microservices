@@ -12,7 +12,7 @@ import {EventManager} from "utils/eventbus/EventManager";
 })
 
 export class Login {
-    message: String;
+    message: string;
     authenticationService: AuthenticationService;
     eventManager: EventManager;
 
@@ -27,8 +27,9 @@ export class Login {
         console.log("user attempts to log in as " + username + " with " + password);
         this.authenticationService.getNewToken(username, password).then((data) => {
             if (data != null && data.split(".").length === 3) {
-                this.message = "You are logged in to the system.";
                 this.authenticationService.logIn(data);
+                let expires = this.authenticationService.getExpireDateTime(data);
+                this.message = "You are logged in to the system until " + new Date(expires);
                 this.eventManager.publish("authenticationStateChange", true);
             } else {
                 this.message = "server did not send correct token.";
