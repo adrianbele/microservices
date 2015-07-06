@@ -8,6 +8,12 @@ set -ex
   tsd install rx --save
   tsd install rx-lite --save
 )
-( cd backend
+( cd jdbc-auth-service
+  mvn clean install
+)
+( cd data-initializer-service
+  mvn clean install
+)
+( cd task-service
   mvn clean install
 )
