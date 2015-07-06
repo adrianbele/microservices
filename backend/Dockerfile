@@ -1,16 +1,16 @@
 ###
 # Docker container for this service
 # To build:
-#  docker build -t microservices/data-initializer-service .
+#  docker build -t microservices/backend-service .
 # To run:
-#   docker run -t -i -p 80:80 microservices/data-initializer-service
+#   docker run -t -i -p 80:80 microservices/backend-service
 ###
 
 # Extend vert.x image
 FROM vertx/vertx3
 
-ENV VERTICLE_NAME nl.ebpi.microservices.database.DataInitializerService
-ENV VERTICLE_FILE target/data-initializer-service-0.0-SNAPSHOT.jar
+ENV VERTICLE_NAME nl.ebpi.microservices.webserver.WebServer
+ENV VERTICLE_FILE target/backend-0.0-SNAPSHOT.jar
 
 # Set the location of the verticles
 ENV VERTICLE_HOME /usr/verticles

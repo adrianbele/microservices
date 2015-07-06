@@ -5,7 +5,7 @@
 
     <!-- This pom must only be used by IDEs to import the projects more easily -->
     <!-- For a real project, microservices should live in their own repos... -->
-    <modelVersion>9999.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
     <groupId>nl.ebpi</groupId>
 
@@ -15,11 +15,16 @@
 
     <version>0.0-SNAPSHOT</version>
 
+    <properties>
+        <stack.version>3.0.0</stack.version>
+    </properties>
+
     <modules>
         <module>jdbc-auth-service</module>
         <module>data-initializer-service</module>
         <module>task-service</module>
         <module>backend</module>
     </modules>
+
 
 </project>
