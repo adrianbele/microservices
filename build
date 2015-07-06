@@ -10,10 +10,13 @@ set -ex
 )
 ( cd jdbc-auth-service
   mvn clean install
+  docker build -t poc/jdbc-auth-service .
 )
 ( cd data-initializer-service
   mvn clean install
+  docker build -t poc/data-initializer-service .
 )
 ( cd task-service
   mvn clean install
+  docker build -t poc/task-service .
 )
