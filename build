@@ -1,7 +1,4 @@
 set -ex
-( cd backend
-  mvn clean install
-)
 ( cd angular2-client
   npm install typescript@^1.5.0-beta
   npm install tsd
@@ -9,4 +6,7 @@ set -ex
   tsd install es6-promise --save
   tsd install rx --save
   tsd install rx-lite --save
+)
+( cd backend
+  mvn clean install
 )
