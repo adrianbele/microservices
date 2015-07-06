@@ -3,7 +3,7 @@ FROM vertx/vertx3
 
 #
 ENV VERTICLE_NAME nl.ebpi.microservices.auth.JDBCAuthService
-ENV VERTICLE_FILE backend/target/task-service-0.0-SNAPSHOT.jar
+ENV VERTICLE_FILE target/task-service-0.0-SNAPSHOT.jar
 
 # Set the location of the verticles
 ENV VERTICLE_HOME /usr/verticles
