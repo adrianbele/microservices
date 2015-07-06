@@ -13,10 +13,10 @@
     <version>0.0-SNAPSHOT</version>
 
     <modules>
-        <module>backend</module>
         <module>jdbc-auth-service</module>
         <module>data-initializer-service</module>
         <module>task-service</module>
+        <module>backend</module>
     </modules>
 
 </project>
