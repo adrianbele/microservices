@@ -29,7 +29,7 @@ export class AuthenticationService {
         this.loggedIn = false;
     }
 
-    getExpireDateTime(token: string): number {
+    getExpireTimestamp(token: string): number {
         let tokenArr = token.split(".");
         console.log("middle section of token is " + tokenArr[1]);
         let decodedMeta = this.base64Decode(tokenArr[1]);

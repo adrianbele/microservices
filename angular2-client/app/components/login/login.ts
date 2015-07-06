@@ -28,8 +28,8 @@ export class Login {
         this.authenticationService.getNewToken(username, password).then((data) => {
             if (data != null && data.split(".").length === 3) {
                 this.authenticationService.logIn(data);
-                let expires = this.authenticationService.getExpireDateTime(data);
-                this.message = "You are logged in to the system until " + new Date(expires);
+                let expires = this.authenticationService.getExpireTimestamp(data);
+                this.message = "Logged in to the system until " + new Date(expires);
                 this.eventManager.publish("authenticationStateChange", true);
             } else {
                 this.message = "server did not send correct token.";
