@@ -19,6 +19,8 @@ export class Tasks {
     constructor(taskService: TaskService) {
         console.log("tasks.ts constructor");
         this.taskService = taskService;
+
+        // TODO let getTasks get the jwt and check expire
         let token = localStorage.getItem("jwt");
 
         this.taskService.getTasks(token).then((obj) => {
