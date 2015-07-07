@@ -1,3 +1,5 @@
+#!/bin/sh
+
 set -ex
 ( export PATH="$PATH:$(npm bin)"
   cd angular2-client
@@ -7,6 +9,10 @@ set -ex
   tsd install es6-promise --save
   tsd install rx --save
   tsd install rx-lite --save
+)
+( cd backend
+  mvn clean install
+  docker build -t poc/backend .
 )
 ( cd jdbc-auth-service
   mvn clean install
