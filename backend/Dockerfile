@@ -1,9 +1,9 @@
 ###
 # Docker container for this service
 # To build:
-#  docker build -t microservices/backend-service .
+# sudo docker build -t microservices/backend-service .
 # To run:
-#   docker run -t -i -p 80:80 microservices/backend-service
+# sudo docker run -t -i -p 8080:8080 microservices/backend-service
 ###
 
 # Extend vert.x image
@@ -15,7 +15,7 @@ ENV VERTICLE_FILE target/backend-0.0-SNAPSHOT.jar
 # Set the location of the verticles
 ENV VERTICLE_HOME /usr/verticles
 
-EXPOSE 80
+EXPOSE 8080
 
 # Copy your verticle to the container
 COPY $VERTICLE_FILE $VERTICLE_HOME/
