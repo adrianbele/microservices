@@ -1,9 +1,9 @@
 ###
 # Docker container for this service
 # To build:
-#  docker build -t microservices/jdbc-auth-service .
+# sudo docker build -t microservices/jdbc-auth-service .
 # To run:
-#   docker run -t -i -p 80:80 microservices/jdbc-auth-service
+# sudo docker run -t -i microservices/jdbc-auth-service
 ###
 
 # Extend vert.x image
@@ -14,8 +14,6 @@ ENV VERTICLE_FILE target/jdbc-auth-service-0.0-SNAPSHOT.jar
 
 # Set the location of the verticles
 ENV VERTICLE_HOME /usr/verticles
-
-EXPOSE 80
 
 # Copy your verticle to the container
 COPY $VERTICLE_FILE $VERTICLE_HOME/
