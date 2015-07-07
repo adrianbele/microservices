@@ -9,6 +9,8 @@ set -ex
   tsd install es6-promise --save
   tsd install rx --save
   tsd install rx-lite --save
+
+  docker build -t poc/frontend .
 )
 ( cd backend
   mvn clean install
