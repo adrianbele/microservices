@@ -20,10 +20,7 @@ export class Tasks {
         console.log("tasks.ts constructor");
         this.taskService = taskService;
 
-        // TODO let getTasks get the jwt and check expire
-        let token = localStorage.getItem("jwt");
-
-        this.taskService.getTasks(token).then((obj) => {
+        this.taskService.getTasks().then((obj) => {
             this.tasks = obj.actionResult;
             this.nrOfTasks = this.tasks.length;
             console.log("finished getting tasks: " + this.tasks.length);
@@ -33,10 +30,8 @@ export class Tasks {
 
     addTask(event, newname) {
         event.preventDefault(); // prevent native page refresh
-        let token = localStorage.getItem("jwt");
         let newTask = new Task(newname.value);
-
-        this.taskService.addTask(newTask, token).then((obj) => {
+        this.taskService.addTask(newTask).then((obj) => {
             newTask.setId(obj.actionResult._id);
             this.tasks.push(newTask);
             newname.value = "";
