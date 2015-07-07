@@ -45,6 +45,8 @@ class App {
         // TODO perhaps throw event so the service does not need to be called
         this.authenticationService.logOut();
         this.loggedIn = false;
+        // TODO use angular2 routing when it works, for now do a crude full page reload
+        window.location.assign("/");
     }
 }
 
