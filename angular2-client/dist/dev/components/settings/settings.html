@@ -1,5 +1,10 @@
+<div [hidden]="!authenticationService.isLoggedIn()">
 
-<ul class="pure-menu-list">
-    <li class="pure-menu-item">Setting 1</li>
-    <li class="pure-menu-item">Setting 2</li>
-</ul>
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item">Setting 1</li>
+        <li class="pure-menu-item">Setting 2</li>
+    </ul>
+
+</div>
+
+<p [hidden]="!message" class="message-container">{{message}}</p>

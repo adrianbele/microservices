@@ -31,6 +31,10 @@ export class Login {
                 let expires = this.authenticationService.getExpireTimestamp(data);
                 this.message = "Logged in to the system until " + new Date(expires);
                 this.eventManager.publish("authenticationStateChange", true);
+                setInterval(
+                    (_) => this.checkLoggedInStatus(),
+                    1000 * 60
+                );
             } else {
                 this.message = "server did not send correct token.";
                 this.authenticationService.logOut();
@@ -42,5 +46,13 @@ export class Login {
             console.log(error.message);
             this.eventManager.publish("authenticationStateChange", false);
         });
+    }
+
+    private checkLoggedInStatus() {
+        if (!this.authenticationService.isLoggedIn()) {
+            this.authenticationService.logOut();
+            this.eventManager.publish("authenticationStateChange", false);
+            this.message = "Your session expired. Please log in.";
+        }
     }
 }

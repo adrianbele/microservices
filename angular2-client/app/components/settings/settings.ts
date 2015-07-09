@@ -1,9 +1,19 @@
 import {Component, View} from 'angular2/angular2';
+import {AuthenticationService} from '../../services/AuthenticationService';
 
-@Component({selector: 'component-4'})
-
-@View({
-  templateUrl: './components/settings/settings.html?v=<%= VERSION %>',
+@Component({
+    selector: 'component-4',
+    appInjector: [AuthenticationService]
 })
+@View({
+    templateUrl: './components/settings/settings.html?v=<%= VERSION %>',
+})
+export class Settings {
+    authenticationService: AuthenticationService;
+    message: string;
 
-export class Settings {}
+    constructor(authenticationService: AuthenticationService) {
+        this.authenticationService = authenticationService;
+        this.message = null;
+    }
+}
