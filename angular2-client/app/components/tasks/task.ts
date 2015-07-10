@@ -1,7 +1,7 @@
 
 /**
 * API declares a Task as:
-* {"description":"Task description","_id":"1","assignee":"Henk","title":"Report an issue","user_id":"1"}
+* {"description":"Task description","_id":"1","assignee":"Tim","title":"Report an issue","user_id":"1"}
 */
 export class Task {
     description: number;

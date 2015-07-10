@@ -13,16 +13,12 @@ import {TaskService} from '../../services/TaskService';
     directives: [NgFor]
 })
 export class Tasks {
-    authenticationService: AuthenticationService;
-    taskService: TaskService;
     tasks: Array<Task>;
     nrOfTasks: number;
     message: string;
 
-    constructor(authenticationService: AuthenticationService, taskService: TaskService) {
+    constructor(public authenticationService: AuthenticationService, public taskService: TaskService) {
         console.log("tasks.ts constructor");
-        this.authenticationService = authenticationService
-        this.taskService = taskService;
         this.message = null;
 
         if (this.authenticationService.isLoggedIn()) {

@@ -27,11 +27,9 @@ import {EventManager} from "utils/eventbus/EventManager";
   directives: [RouterOutlet, RouterLink]
 })
 class App {
-    authenticationService: AuthenticationService;
     public loggedIn: boolean;
 
-    constructor(authenticationService: AuthenticationService) {
-        this.authenticationService = authenticationService;
+    constructor(public authenticationService: AuthenticationService) {
         let eventManager = EventManager.getInstance();
 
         this.loggedIn = authenticationService.isLoggedIn();

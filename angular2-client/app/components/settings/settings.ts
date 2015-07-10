@@ -9,11 +9,9 @@ import {AuthenticationService} from '../../services/AuthenticationService';
     templateUrl: './components/settings/settings.html?v=<%= VERSION %>',
 })
 export class Settings {
-    authenticationService: AuthenticationService;
     message: string;
 
-    constructor(authenticationService: AuthenticationService) {
-        this.authenticationService = authenticationService;
+    constructor(public authenticationService: AuthenticationService) {
         this.message = null;
     }
 }

@@ -13,11 +13,9 @@ import {EventManager} from "utils/eventbus/EventManager";
 
 export class Login {
     message: string;
-    authenticationService: AuthenticationService;
     eventManager: EventManager;
 
-    constructor(authenticationService: AuthenticationService) {
-        if (!this.authenticationService) this.authenticationService = authenticationService;
+    constructor(public authenticationService: AuthenticationService) {
         this.eventManager = EventManager.getInstance(); // singleton, do not use DI
         this.message = null;
     }
