@@ -4,7 +4,7 @@ import {EventManager} from "utils/eventbus/EventManager";
 
 @Component({
     selector: 'component-3',
-    appInjector: [AuthenticationService]
+    viewInjector: [AuthenticationService]
 })
 
 @View({

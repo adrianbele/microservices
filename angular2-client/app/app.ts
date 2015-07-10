@@ -13,13 +13,14 @@ import {EventManager} from "utils/eventbus/EventManager";
 
 @Component({
     selector: 'app',
-    appInjector: [AuthenticationService]
+    viewInjector: [AuthenticationService]
 })
 @RouteConfig([
-  { path: '/', component: Home, as: 'home' },
-  { path: '/tasks', component: Tasks, as: 'tasks' },
-  { path: '/login', component: Login, as: 'login' },
-  { path: '/settings', component: Settings, as: 'settings' }
+    { path: '/', component: Home, as: 'home' },
+    { path: '/home', component: Home, as: 'home' },
+    { path: '/tasks', component: Tasks, as: 'tasks' },
+    { path: '/login', component: Login, as: 'login' },
+    { path: '/settings', component: Settings, as: 'settings' }
 ])
 @View({
   templateUrl: './app.html?v=<%= VERSION %>',
@@ -38,6 +39,7 @@ class App {
             this.loggedIn = msg;
             console.log("App caught event, loggedIn: " + msg);
         });
+        console.log("app.ts finished constructor");
     }
 
     logout(event) {

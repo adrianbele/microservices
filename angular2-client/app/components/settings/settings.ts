@@ -3,7 +3,7 @@ import {AuthenticationService} from '../../services/AuthenticationService';
 
 @Component({
     selector: 'component-4',
-    appInjector: [AuthenticationService]
+    viewInjector: [AuthenticationService]
 })
 @View({
     templateUrl: './components/settings/settings.html?v=<%= VERSION %>',

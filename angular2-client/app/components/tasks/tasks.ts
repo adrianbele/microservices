@@ -6,7 +6,7 @@ import {TaskService} from '../../services/TaskService';
 
 @Component({
     selector: 'component-2',
-    appInjector: [AuthenticationService, TaskService]
+    viewInjector: [AuthenticationService, TaskService]
 })
 @View({
     templateUrl: './components/tasks/tasks.html?v=<%= VERSION %>',
