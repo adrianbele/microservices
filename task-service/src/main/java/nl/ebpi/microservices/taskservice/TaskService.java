@@ -32,19 +32,13 @@ public class TaskService extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
-
-
         mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", "tasks_db").put("host", "mongodb").put("port", 27017));
 
         EventBus eventBus = vertx.eventBus();
         eventBus.consumer(TASK_SERVICE_ADDRESS, message -> {
 
             handleQuery(message);
-
-
         });
-
-
     }
 
     @Override
