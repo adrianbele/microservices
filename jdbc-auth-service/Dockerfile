@@ -3,7 +3,7 @@
 # To build:
 # sudo docker build -t microservices/jdbc-auth-service .
 # To run:
-# sudo docker run -t -i microservices/jdbc-auth-service
+# sudo docker run --link mongodb -t -i microservices/jdbc-auth-service
 ###
 
 # Extend vert.x image
