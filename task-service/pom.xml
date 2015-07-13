@@ -10,7 +10,6 @@
 
     <properties>
         <stack.version>3.0.0</stack.version>
-        <doc.skip>true</doc.skip>
     </properties>
 
     <dependencies>
@@ -39,11 +38,6 @@
             <version>${stack.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-jdbc-client</artifactId>
-            <version>${stack.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
@@ -51,11 +45,11 @@
             <version>${stack.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-mongo-embedded-db</artifactId>
-            <version>${stack.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>io.vertx</groupId>-->
+            <!--<artifactId>vertx-mongo-embedded-db</artifactId>-->
+            <!--<version>${stack.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>io.vertx</groupId>
@@ -64,11 +58,7 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.3.2</version>
-        </dependency>
+
 
     </dependencies>
 

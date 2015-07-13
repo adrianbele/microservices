@@ -10,7 +10,6 @@
 
     <properties>
         <stack.version>3.0.0</stack.version>
-        <doc.skip>true</doc.skip>
     </properties>
 
     <dependencies>
@@ -37,12 +36,6 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-mongo-client</artifactId>
-            <version>${stack.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-mongo-embedded-db</artifactId>
             <version>${stack.version}</version>
         </dependency>
 

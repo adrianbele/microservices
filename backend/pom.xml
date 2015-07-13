@@ -10,7 +10,6 @@
 
     <properties>
         <stack.version>3.0.0</stack.version>
-        <doc.skip>true</doc.skip>
     </properties>
 
     <dependencies>
