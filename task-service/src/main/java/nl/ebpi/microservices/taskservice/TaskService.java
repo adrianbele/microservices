@@ -32,15 +32,27 @@ public class TaskService extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
-        mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", "tasks_db"));
+
+
+        mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", "tasks_db").put("host", "mongodb").put("port", 27017));
+
         EventBus eventBus = vertx.eventBus();
         eventBus.consumer(TASK_SERVICE_ADDRESS, message -> {
+
             handleQuery(message);
 
 
         });
 
 
+    }
+
+    @Override
+    public void stop() throws Exception {
+
+        mongoClient.close();
+        System.out.println("stop task service");
+        LOGGER.info("Stopping tast service");
     }
 
     private void handleQuery(Message<Object> message) {
@@ -149,6 +161,5 @@ public class TaskService extends AbstractVerticle {
 
         }
     }
-
 
 }

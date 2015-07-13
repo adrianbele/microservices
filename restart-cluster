@@ -29,4 +29,6 @@ restart_cluster 3 poc/task-service
 # requires public port, so only one
 restart_cluster 0 poc/backend -p 8080:8080
 
-docker run -itd -p 80:3000 --name frontend poc/frontend /usr/bin/warp -d /var/www/html
+docker stop poc_frontend_0 || true
+docker rm poc_frontend_0 || true
+docker run -itd -p 80:3000 --name poc_frontend_0 poc/frontend 'http://inn-o-as1.lan.inology.nl:8080'
