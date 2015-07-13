@@ -2,6 +2,8 @@ import {$http} from "services/http";
 
 export class AuthenticationService {
 
+    private REST_HOST = "http://localhost:8080";
+
     constructor() {
         console.log("AuthenticationService constructed with loggedIn [" + this.isLoggedIn() + "] based on localStorage");
     }
@@ -41,7 +43,7 @@ export class AuthenticationService {
     * @return Promise object
     */
     getNewToken(username: String, password: String): Promise<any> {
-        return $http.get("http://localhost:8080/api/newToken?username=" + username + "&password=" + password, null);
+        return $http.get(this.REST_HOST + "/api/newToken?username=" + username + "&password=" + password, null);
     }
 
     private base64Decode(s: string): string {
