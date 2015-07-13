@@ -14,7 +14,6 @@ import {TaskService} from '../../services/TaskService';
 })
 export class Tasks {
     tasks: Array<Task>;
-    nrOfTasks: number;
     message: string;
 
     constructor(public authenticationService: AuthenticationService, public taskService: TaskService) {
@@ -24,7 +23,6 @@ export class Tasks {
         if (this.authenticationService.isLoggedIn()) {
             this.taskService.getTasks().then((obj) => {
                 this.tasks = obj.actionResult;
-                this.nrOfTasks = this.tasks.length;
                 console.log("finished getting tasks: " + this.tasks.length);
             }).catch((error) => {
                 this.message = error.message;
