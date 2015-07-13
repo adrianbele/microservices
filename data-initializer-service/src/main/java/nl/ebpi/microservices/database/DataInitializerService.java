@@ -1,11 +1,9 @@
 package nl.ebpi.microservices.database;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Handler;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
-import io.vertx.ext.sql.SQLConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,10 +20,12 @@ import static java.lang.String.format;
  */
 public class DataInitializerService extends AbstractVerticle {
     private final static Logger LOGGER = Logger.getLogger(DataInitializerService.class.getName());
+    MongoClient dbClient;
 
     @Override
     public void start() throws Exception {
 
+        dbClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", "tasks_db").put("host", "mongodb").put("port", 27017));
         EventBus eb = vertx.eventBus();
 
         eb.consumer("data-initializer-address", message -> {
@@ -37,11 +37,16 @@ public class DataInitializerService extends AbstractVerticle {
         LOGGER.info(String.format("%s is up and running.", DataInitializerService.class.getName()));
     }
 
+    @Override
+    public void stop() throws Exception {
+
+        dbClient.close();
+        LOGGER.info("Stopping tast service");
+    }
+
     private void setUpInitialData() {
         initializeUsers();
         initializeTasks();
-
-
     }
 
     private void initializeUsers() {
@@ -72,7 +77,6 @@ public class DataInitializerService extends AbstractVerticle {
     }
 
     private void initializeTasks() {
-        MongoClient dbClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", "tasks_db"));
         dbClient.dropCollection("tasks", drop -> {
             if (drop.failed()) {
                 throw new RuntimeException(drop.cause());
