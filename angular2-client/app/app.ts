@@ -1,7 +1,7 @@
 /// <reference path="../typings/tsd.d.ts" />
 
 import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
-import {RouteConfig, RouterOutlet, RouterLink, routerInjectables} from 'angular2/router';
+import {RouteConfig, RouterOutlet, RouterLink, Router, routerInjectables} from 'angular2/router';
 
 import {Home} from './components/home/home';
 import {Tasks} from './components/tasks/tasks';
@@ -29,7 +29,7 @@ import {EventManager} from "utils/eventbus/EventManager";
 class App {
     public loggedIn: boolean;
 
-    constructor(public authenticationService: AuthenticationService) {
+    constructor(public authenticationService: AuthenticationService, public router: Router) {
         let eventManager = EventManager.getInstance();
 
         this.loggedIn = authenticationService.isLoggedIn();
@@ -45,8 +45,7 @@ class App {
         // TODO perhaps throw event so the service does not need to be called
         this.authenticationService.logOut();
         this.loggedIn = false;
-        // TODO use angular2 routing when it works, for now do a crude full page reload
-        window.location.assign("/");
+        this.router.navigate("/home");
     }
 }
 

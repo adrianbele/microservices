@@ -31,7 +31,7 @@ export class Login {
                 this.eventManager.publish("authenticationStateChange", true);
                 setInterval(
                     (_) => this.checkLoggedInStatus(),
-                    1000 * 60
+                    1000 * 60 * 5
                 );
             } else {
                 this.message = "server did not send correct token.";
