@@ -6,4 +6,8 @@ import {Component, View} from 'angular2/angular2';
 @View({
     templateUrl: './components/home/home.html?v=<%= VERSION %>',
 })
-export class Home {}
+export class Home {
+    constructor() {
+        console.log("home.ts constructor");
+    }
+}

@@ -13,24 +13,23 @@ import {EventManager} from "utils/eventbus/EventManager";
 
 @Component({
     selector: 'app',
-    appInjector: [AuthenticationService]
+    viewInjector: [AuthenticationService]
 })
 @RouteConfig([
-  { path: '/', component: Home, as: 'home' },
-  { path: '/tasks', component: Tasks, as: 'tasks' },
-  { path: '/login', component: Login, as: 'login' },
-  { path: '/settings', component: Settings, as: 'settings' }
+    { path: '/', component: Home, as: 'home' },
+    { path: '/home', component: Home, as: 'home' },
+    { path: '/tasks', component: Tasks, as: 'tasks' },
+    { path: '/login', component: Login, as: 'login' },
+    { path: '/settings', component: Settings, as: 'settings' }
 ])
 @View({
   templateUrl: './app.html?v=<%= VERSION %>',
   directives: [RouterOutlet, RouterLink]
 })
 class App {
-    authenticationService: AuthenticationService;
     public loggedIn: boolean;
 
-    constructor(authenticationService: AuthenticationService) {
-        this.authenticationService = authenticationService;
+    constructor(public authenticationService: AuthenticationService) {
         let eventManager = EventManager.getInstance();
 
         this.loggedIn = authenticationService.isLoggedIn();
@@ -38,6 +37,7 @@ class App {
             this.loggedIn = msg;
             console.log("App caught event, loggedIn: " + msg);
         });
+        console.log("app.ts finished constructor");
     }
 
     logout(event) {
@@ -45,6 +45,8 @@ class App {
         // TODO perhaps throw event so the service does not need to be called
         this.authenticationService.logOut();
         this.loggedIn = false;
+        // TODO use angular2 routing when it works, for now do a crude full page reload
+        window.location.assign("/");
     }
 }
 

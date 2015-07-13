@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# this evil script starts a hardcoded cluster
+
+set -e
+
+logdo() {
+  echo "$@" 1>&2
+  "$@"
+}
+
+restart_cluster() {
+  n=$1
+  name=$2
+  shift 2
+  for i in `seq 0 $n`; do
+    instance="$(echo ${name}_$i | sed s@/@_@g)"
+    logdo docker stop $instance || echo Failed to stop container $instance, continuing
+    logdo docker rm $instance || echo Failed to remove container $instance, continuing
+    logdo docker run --name $instance -dti "$@" $name
+  done
+}
+
+# decreasing the numbers requires manual intervention...
+restart_cluster 2 poc/jdbc-auth-service
+restart_cluster 1 poc/data-initializer-service
+restart_cluster 3 poc/task-service
+
+# requires public port, so only one
+restart_cluster 0 poc/backend -p 8080:8080
+
+docker run -itd -p 80:3000 --name frontend poc/frontend /usr/bin/warp -d /var/www/html

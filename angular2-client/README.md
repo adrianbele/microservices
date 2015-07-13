@@ -11,5 +11,4 @@ Angular 2.0 client for vert.x server application
 	npm-check-updates -u
 	tsd query angular --resolve --overwrite --save --action install
 
-# TODO
-- create BETTER feedback for authentication call
+

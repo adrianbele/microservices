@@ -1,17 +1,21 @@
-<h2>Tasks</h2>
+<div [hidden]="!authenticationService.isLoggedIn()">
+    <h2>Tasks</h2>
 
-<form class="pure-form">
-    <fieldset>
-        <legend>Add a task</legend>
+    <form class="pure-form">
+        <fieldset>
+            <legend>Add a task</legend>
 
-        <input #newname placeholder="description ..." />
+            <input #newname placeholder="description ..." />
 
-        <button (click)="addTask($event, newname)" class="pure-button pure-button-primary">add</button>
-    </fieldset>
-</form>
+            <button (click)="addTask($event, newname)" class="pure-button pure-button-primary">add</button>
+        </fieldset>
+    </form>
 
-<ul class="pure-menu-list">
-    <li *ng-for="#task of tasks" class="pure-menu-item">{{task.title}}</li>
-</ul>
+    <ul class="pure-menu-list">
+        <li *ng-for="#task of tasks" class="pure-menu-item">{{task.title}}</li>
+    </ul>
 
-<p>Number of tasks: {{nrOfTasks}}</p>
+    <p>Number of tasks: {{nrOfTasks}}</p>
+</div>
+
+<p [hidden]="!message" class="message-container">{{message}}</p>

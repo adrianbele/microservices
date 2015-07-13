@@ -34,3 +34,11 @@ dl dh {
     font-weight: bold;
     margin-bottom: 0.5em;
 }
+
+#progress-indicator {
+    position: absolute;
+    top: 3em;
+    font-size: 2em;
+    width: 100%;
+    text-align: center;
+}

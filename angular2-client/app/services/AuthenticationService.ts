@@ -1,41 +1,39 @@
 import {$http} from "services/http";
+import {REST_HOST} from "../config";
 
 export class AuthenticationService {
 
-    loggedIn: boolean;
-
     constructor() {
-        if(localStorage.getItem('jwt')) {
-            this.loggedIn = true;
-        } else {
-            this.loggedIn = false;
-        }
-        console.log("AuthenticationService constructed with loggedIn [" + this.loggedIn + "] based on localStorage");
+        console.log("AuthenticationService constructed with loggedIn [" + this.isLoggedIn() + "] based on localStorage");
     }
 
     isLoggedIn() {
-        return this.loggedIn;
+        let token = localStorage.getItem('jwt');
+        if(token && !this.isExpired(token)) {
+            return true;
+        }
+        return false;
     }
 
     logIn(token: any) {
-        console.log("AuthenticationService logIn (set jwt in localStorage and this.loggedIn as true)");
+        console.log("AuthenticationService logIn (set jwt in localStorage)");
         localStorage.setItem("jwt", token);
-        this.loggedIn = true;
     }
 
     logOut() {
         console.log("AuthenticationService logOut (remove jwt from localStorage)");
         localStorage.removeItem('jwt');
-        this.loggedIn = false;
+    }
+
+    isExpired(token: string): boolean {
+        //console.log("compare timestamps: " + Date.now() + " and " + this.getExpireTimestamp(token));
+        return (Date.now() > this.getExpireTimestamp(token));
     }
 
     getExpireTimestamp(token: string): number {
         let tokenArr = token.split(".");
-        console.log("middle section of token is " + tokenArr[1]);
         let decodedMeta = this.base64Decode(tokenArr[1]);
-        console.log("decoded middle section of token is " + decodedMeta);
         let jsonMeta = JSON.parse(decodedMeta);
-        console.log("jsonMeta of middle section of token is " + jsonMeta);
         return jsonMeta.exp * 1000;
     }
 
@@ -44,7 +42,7 @@ export class AuthenticationService {
     * @return Promise object
     */
     getNewToken(username: String, password: String): Promise<any> {
-        return $http.get("http://localhost:8080/api/newToken?username=" + username + "&password=" + password, null);
+        return $http.get(REST_HOST + "/api/newToken?username=" + username + "&password=" + password, null);
     }
 
     private base64Decode(s: string): string {

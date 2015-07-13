@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <base href="<%= APP_BASE %>">
     <title>Angular2 client for task-manager</title>
     <meta name="description" content="Angular2 client for task-manager">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
@@ -10,7 +11,7 @@
     <!-- endinject -->
 </head>
 <body>
-    <app>Loading...</app>
+    <app><span id="progress-indicator">Loading...</span></app>
 
     <!-- inject:js -->
     <!-- endinject -->

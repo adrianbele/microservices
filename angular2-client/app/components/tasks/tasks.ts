@@ -1,42 +1,43 @@
 import {Component, View, NgFor} from 'angular2/angular2';
 
+import {AuthenticationService} from '../../services/AuthenticationService';
 import {Task} from 'components/tasks/task';
 import {TaskService} from '../../services/TaskService';
 
 @Component({
     selector: 'component-2',
-    appInjector: [TaskService]
+    viewInjector: [AuthenticationService, TaskService]
 })
 @View({
     templateUrl: './components/tasks/tasks.html?v=<%= VERSION %>',
     directives: [NgFor]
 })
 export class Tasks {
-    taskService: TaskService;
-    tasks: Array<any>;
+    tasks: Array<Task>;
     nrOfTasks: number;
+    message: string;
 
-    constructor(taskService: TaskService) {
+    constructor(public authenticationService: AuthenticationService, public taskService: TaskService) {
         console.log("tasks.ts constructor");
-        this.taskService = taskService;
+        this.message = null;
 
-        // TODO let getTasks get the jwt and check expire
-        let token = localStorage.getItem("jwt");
-
-        this.taskService.getTasks(token).then((obj) => {
-            this.tasks = obj.actionResult;
-            this.nrOfTasks = this.tasks.length;
-            console.log("finished getting tasks: " + this.tasks.length);
-        });
-        // TODO catch error
+        if (this.authenticationService.isLoggedIn()) {
+            this.taskService.getTasks().then((obj) => {
+                this.tasks = obj.actionResult;
+                this.nrOfTasks = this.tasks.length;
+                console.log("finished getting tasks: " + this.tasks.length);
+            }).catch((error) => {
+                this.message = error.message;
+            });
+        } else {
+            this.message = "You are not authenticated, please log in.";
+        }
     }
 
     addTask(event, newname) {
         event.preventDefault(); // prevent native page refresh
-        let token = localStorage.getItem("jwt");
         let newTask = new Task(newname.value);
-
-        this.taskService.addTask(newTask, token).then((obj) => {
+        this.taskService.addTask(newTask).then((obj) => {
             newTask.setId(obj.actionResult._id);
             this.tasks.push(newTask);
             newname.value = "";

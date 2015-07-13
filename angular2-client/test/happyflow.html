@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:5555/" />
+<title>happyflow</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">happyflow</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Angular2 client for task-manager</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>tim</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>sausages</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//article[@id='wrapper']/section[2]/component-3/form/fieldset/button</td>
+	<td>login</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//article[@id='wrapper']/section[2]/component-3/form/fieldset/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=p.message-container.ng-binding</td>
+	<td>Logged in to the system until</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=h2</td>
+	<td>Tasks</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//article[@id='wrapper']/section[2]/component-2/form/fieldset/button</td>
+	<td>add</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=p.ng-binding</td>
+	<td>Number of tasks: 3</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//article[@id='wrapper']/section[2]/component-2/ul/li[4]</td>
+	<td>Draai Selenium</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=Login</td>
+	<td>Login</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=h2</td>
+	<td>Home for task-manager angular2-client</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
