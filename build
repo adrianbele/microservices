@@ -10,6 +10,10 @@ set -ex
   tsd install rx --save
   tsd install rx-lite --save
 
+  mkdir -p dep
+  (cd dep && test -f busybox && sha256sum -c ../busybox.sha256) || wget http://www.busybox.net/downloads/binaries/1.21.1/busybox-x86_64 -O dep/busybox
+  (cd dep && test -f busybox && sha256sum -c ../busybox.sha256)
+  chmod a+x dep/busybox
   docker build -t poc/frontend .
 )
 ( cd backend

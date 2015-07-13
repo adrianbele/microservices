@@ -1,0 +1,9 @@
+#!/usr/bin/busybox sh
+
+set -ex
+
+rest_host="$1"
+
+echo "exports.REST_HOST = \"$rest_host\";" >/var/www/html/config.js
+
+exec /usr/bin/warp -d /var/www/html
