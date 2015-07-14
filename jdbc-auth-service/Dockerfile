@@ -28,4 +28,4 @@ ENV CLASSPATH=/usr/dep/hsqldb-2.3.2.jar:${CLASSPATH}
 # Launch the verticle
 WORKDIR $VERTICLE_HOME
 ENTRYPOINT ["sh", "-c"]
-CMD ["vertx run $VERTICLE_NAME -cp $VERTICLE_HOME/*  -cluster -cluster-host $CLUSTER_HOST"]
+CMD ["vertx run $VERTICLE_NAME -cp $VERTICLE_HOME/*  -cluster "]
