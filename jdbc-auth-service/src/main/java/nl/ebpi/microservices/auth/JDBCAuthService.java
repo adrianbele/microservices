@@ -22,9 +22,9 @@ public class JDBCAuthService extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
-        initializeUsers();
+
         EventBus eventBus = vertx.eventBus();
-        setJDBCAuthProvider();
+        initializeJdbc();
         eventBus.consumer("login-address", message -> {
 
             LOGGER.info("authenticate with message ["+message.body()+"]");
@@ -43,6 +43,11 @@ public class JDBCAuthService extends AbstractVerticle {
         });
 
         LOGGER.info(String.format("%s is up and running.", JDBCAuthService.class.getName()));
+    }
+
+    private void initializeJdbc() {
+        setJDBCAuthProvider();
+        initializeUsers();
     }
 
     private void setJDBCAuthProvider() {

@@ -11,7 +11,8 @@ FROM vertx/vertx3
 
 ENV VERTICLE_NAME nl.ebpi.microservices.auth.JDBCAuthService
 ENV VERTICLE_FILE target/jdbc-auth-service-0.0-SNAPSHOT.jar
-ENV $JDBC_DRIVER_JAR hsqldb-2.3.2.jar
+
+ENV JDBC_DRIVER_JAR hsqldb-2.3.2.jar
 
 # Set the location of the verticles
 ENV VERTICLE_HOME /usr/verticles
