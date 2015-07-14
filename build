@@ -32,3 +32,6 @@ set -ex
   mvn clean install
   docker build -t poc/task-service .
 )
+( cd mongodb-container
+  docker build -t poc/mongodb .
+)
