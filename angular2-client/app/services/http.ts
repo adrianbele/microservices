@@ -23,6 +23,7 @@ export const $http = {
 function _sendRequest(url: string, payLoad: any, type: string, token: string): Promise<any> {
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
+        req.timeout = 10 * 1000;
         req.open(type, url);
 
         // support for content-type inference and handling accordingly
@@ -51,6 +52,10 @@ function _sendRequest(url: string, payLoad: any, type: string, token: string): P
         req.onerror = function() {
             reject(req.response);
         };
+
+	    req.ontimeout = function() {
+		    reject("server does not respond");
+	    }
 
         if (payLoad) {
             req.send(JSON.stringify(payLoad));

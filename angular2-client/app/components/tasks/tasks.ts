@@ -1,34 +1,36 @@
-import {Component, View, NgFor} from 'angular2/angular2';
+import {Component, View, NgFor, NgIf} from 'angular2/angular2';
 
 import {AuthenticationService} from '../../services/AuthenticationService';
 import {Task} from 'components/tasks/task';
-import {TaskService} from '../../services/TaskService';
+import {TaskServiceImpl} from '../../services/TaskService';
+import {EventManager} from "utils/eventbus/EventManager";
 
 @Component({
     selector: 'component-2',
-    viewInjector: [AuthenticationService, TaskService]
+    viewInjector: [AuthenticationService, TaskServiceImpl]
 })
 @View({
     templateUrl: './components/tasks/tasks.html?v=<%= VERSION %>',
-    directives: [NgFor]
+    directives: [NgFor, NgIf]
 })
 export class Tasks {
     tasks: Array<Task>;
-    message: string;
+	nrOfTasks: number;
+    private eventManager: EventManager = EventManager.getInstance();
 
-    constructor(public authenticationService: AuthenticationService, public taskService: TaskService) {
+    constructor(public authenticationService: AuthenticationService, public taskService: TaskServiceImpl) {
         console.log("tasks.ts constructor");
-        this.message = null;
 
         if (this.authenticationService.isLoggedIn()) {
             this.taskService.getTasks().then((obj) => {
                 this.tasks = obj.actionResult;
                 console.log("finished getting tasks: " + this.tasks.length);
+	            this.nrOfTasks = this.tasks.length;
             }).catch((error) => {
-                this.message = error.message;
+	            this.eventManager.publish("tasksResult", [false, error.message]);
             });
         } else {
-            this.message = "You are not authenticated, please log in.";
+	        this.eventManager.publish("authenticationStateChange", [false, "You are not authenticated, please log in."]);
         }
     }
 
@@ -36,10 +38,14 @@ export class Tasks {
         event.preventDefault(); // prevent native page refresh
         let newTask = new Task(newname.value);
         this.taskService.addTask(newTask).then((obj) => {
+	        console.dir(obj);
             newTask.setId(obj.actionResult._id);
-            this.tasks.push(newTask);
+	        console.log("before push: " + this.tasks.length);
+	        this.nrOfTasks = this.tasks.push(newTask);
+	        this.eventManager.publish("tasksResult", [true, "Added task '" + newTask.getId() + "'"]);
             newname.value = "";
+        }).catch((error) => {
+	        this.eventManager.publish("tasksResult", [false, error.message]);
         });
-        // TODO catch error
     }
 }

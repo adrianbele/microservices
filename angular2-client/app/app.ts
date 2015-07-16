@@ -8,6 +8,8 @@ import {Tasks} from './components/tasks/tasks';
 import {Login} from './components/login/login';
 import {Settings} from './components/settings/settings';
 
+import {Notifications} from './components/notifications/notifications';
+
 import {AuthenticationService} from 'services/AuthenticationService';
 import {EventManager} from "utils/eventbus/EventManager";
 
@@ -24,29 +26,28 @@ import {EventManager} from "utils/eventbus/EventManager";
 ])
 @View({
   templateUrl: './app.html?v=<%= VERSION %>',
-  directives: [RouterOutlet, RouterLink]
+  directives: [RouterOutlet, RouterLink, Notifications]
 })
 class App {
     public loggedIn: boolean;
+	private eventManager: EventManager = EventManager.getInstance();
 
     constructor(public authenticationService: AuthenticationService, public router: Router) {
-        let eventManager = EventManager.getInstance();
-
         this.loggedIn = authenticationService.isLoggedIn();
-        eventManager.subscribe("authenticationStateChange", (msg: boolean) => {
-            this.loggedIn = msg;
-            console.log("App caught event, loggedIn: " + msg);
+        this.eventManager.subscribe("authenticationStateChange", (event: Array<any>) => {
+            this.loggedIn = event[0];
+            console.log("App caught event, loggedIn: " + event[0]);
         });
         console.log("app.ts finished constructor");
     }
 
     logout(event) {
         event.preventDefault();
-        // TODO perhaps throw event so the service does not need to be called
         this.authenticationService.logOut();
         this.loggedIn = false;
+        this.eventManager.publish("authenticationStateChange", [false, "You logged out"]);
         this.router.navigate("/home");
     }
 }
 
-bootstrap(App, [routerInjectables, AuthenticationService]);
+bootstrap(App,[routerInjectables, AuthenticationService]);

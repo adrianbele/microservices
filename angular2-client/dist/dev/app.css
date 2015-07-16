@@ -16,16 +16,6 @@ a.pure-menu-link:active, a.pure-menu-link:hover, a.pure-menu-link:focus {
     color: #5e625d;
 }
 
-.message-container {
-    background-color: #FEF5CA;
-    border: 1px solid silver;
-    padding: 1em;
-    font-size: 0.8em;
-    color: black;
-    border-radius: 0.5em;
-    width: auto;
-}
-
 dl dt {
     font-style: italic;
 }
@@ -33,6 +23,18 @@ dl dt {
 dl dh {
     font-weight: bold;
     margin-bottom: 0.5em;
+}
+
+.message-container {
+    position: fixed;
+    top: 0em;
+    right: 0.5em;
+    background-color: #FEF5CA;
+    border: 1px solid silver;
+    padding: 1em;
+    font-size: 0.8em;
+    color: black;
+    border-radius: 0.5em;
 }
 
 #progress-indicator {

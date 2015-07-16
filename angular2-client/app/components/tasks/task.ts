@@ -18,4 +18,8 @@ export class Task {
     public setId(id: number) {
         this._id = id;
     }
+
+    public getId(): number {
+        return this._id;
+    }
 }
