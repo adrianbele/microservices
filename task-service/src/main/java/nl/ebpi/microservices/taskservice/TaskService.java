@@ -57,15 +57,19 @@ public class TaskService extends AbstractVerticle {
         switch ( action ) {
             case ACTION_PUT:
                 update(message, actionReplyMessage);
+                LOGGER.info("UPDATE TASK");
                 break;
             case ACTION_POST:
                 addTask(message, actionReplyMessage);
+                LOGGER.info("ADD TASK");
                 break;
             case ACTION_DELETE:
                 removeTask(message, actionReplyMessage);
+                LOGGER.info("REMOVE TASK");
                 break;
             case ACTION_GET:
                 retrieveTasksByUserId(message, actionReplyMessage);
+                LOGGER.info("GET ALL TASKS");
                 break;
             default:
                 actionReplyMessage.put("failure-case", "Unsupported action");
