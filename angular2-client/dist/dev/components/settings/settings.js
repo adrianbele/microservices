@@ -22,7 +22,7 @@ var Settings = (function () {
             viewInjector: [AuthenticationService_1.AuthenticationService]
         }),
         angular2_1.View({
-            templateUrl: './components/settings/settings.html?v=0.6.1',
+            templateUrl: './components/settings/settings.html?v=0.7.0',
         }), 
         __metadata('design:paramtypes', [AuthenticationService_1.AuthenticationService])
     ], Settings);

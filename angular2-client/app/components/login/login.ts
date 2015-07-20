@@ -12,12 +12,10 @@ import {EventManager} from "utils/eventbus/EventManager";
 })
 
 export class Login {
-    message: string;
     eventManager: EventManager;
 
     constructor(public authenticationService: AuthenticationService) {
         this.eventManager = EventManager.getInstance(); // singleton, do not use DI
-        this.message = null;
     }
 
     login(event, username: String, password: String) {
@@ -27,30 +25,26 @@ export class Login {
             if (data != null && data.split(".").length === 3) {
                 this.authenticationService.logIn(data);
                 let expires = this.authenticationService.getExpireTimestamp(data);
-                this.message = "Logged in to the system until " + new Date(expires);
-                this.eventManager.publish("authenticationStateChange", true);
+                this.eventManager.publish("authenticationStateChange", [true, "Logged in to the system until " + new Date(expires)]);
                 setInterval(
                     (_) => this.checkLoggedInStatus(),
                     1000 * 60 * 5
                 );
             } else {
-                this.message = "server did not send correct token.";
                 this.authenticationService.logOut();
-                this.eventManager.publish("authenticationStateChange", false);
+                this.eventManager.publish("authenticationStateChange", [false, "server did not send correct token"]);
             }
         })
         .catch((error) => {
-            this.message = error.message;
             console.log(error.message);
-            this.eventManager.publish("authenticationStateChange", false);
+            this.eventManager.publish("authenticationStateChange", [false, error.message]);
         });
     }
 
     private checkLoggedInStatus() {
         if (!this.authenticationService.isLoggedIn()) {
             this.authenticationService.logOut();
-            this.eventManager.publish("authenticationStateChange", false);
-            this.message = "Your session expired. Please log in.";
+            this.eventManager.publish("authenticationStateChange", [false, "Your session expired. Please log in"]);
         }
     }
 }

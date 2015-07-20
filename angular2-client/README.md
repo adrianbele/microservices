@@ -9,7 +9,7 @@ Angular 2.0 client for vert.x server application
 
 # Update Packages and Definitions
 	npm-check-updates -u
-	tsd query angular --resolve --overwrite --save --action install
+	tsd query angular2 --resolve --overwrite --save --action install
 
 # Building the Docker Image
 

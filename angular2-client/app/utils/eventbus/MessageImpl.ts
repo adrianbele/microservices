@@ -2,10 +2,10 @@
  * Created by tvalentijn on 7/2/15.
  */
 
-import {MessageInterface} from "utils/eventbus/MessageInterface";
+import {Message} from "utils/eventbus/MessageInterface";
 import {Subscription} from "utils/eventbus/Subscription";
 
-export class MessageImpl implements MessageInterface {
+export class MessageImpl implements Message {
 
     private _subscriptions: Subscription[] = [];
     private _nextId: number = 0;

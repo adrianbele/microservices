@@ -13,7 +13,7 @@ restart_cluster() {
   n=$1
   name=$2
   shift 2
-  for i in `seq 0 $n`; do
+  for i in `seq 1 $n`; do
     instance="$(echo ${name}_$i | sed s@/@_@g)"
     logdo docker stop $instance || echo Failed to stop container $instance, continuing
     logdo docker rm $instance || echo Failed to remove container $instance, continuing
@@ -22,13 +22,17 @@ restart_cluster() {
 }
 
 # decreasing the numbers requires manual intervention...
-restart_cluster 2 poc/jdbc-auth-service
-restart_cluster 1 poc/data-initializer-service
-restart_cluster 3 poc/task-service
+
+# always start only one...
+restart_cluster 1 poc/mongodb
+
+restart_cluster 1 poc/jdbc-auth-service  # TODO link with some sql db
+restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
+restart_cluster 1 poc/task-service --link poc_mongodb_1:mongodb
 
 # requires public port, so only one
-restart_cluster 0 poc/backend -p 8080:8080
+restart_cluster 1 poc/backend -p 8080:8080
 
-docker stop poc_frontend_0 || true
-docker rm poc_frontend_0 || true
-docker run -itd -p 80:3000 --name poc_frontend_0 poc/frontend 'http://inn-o-as1.lan.inology.nl:8080'
+docker stop poc_frontend_1 || true
+docker rm poc_frontend_1 || true
+docker run -itd -p 80:3000 --name poc_frontend_1 poc/frontend 'http://inn-o-as1.lan.inology.nl:8080'

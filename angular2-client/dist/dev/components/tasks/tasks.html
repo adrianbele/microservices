@@ -1,11 +1,11 @@
 <div [hidden]="!authenticationService.isLoggedIn()">
     <h2>Tasks</h2>
 
-    <ul class="pure-menu-list">
-        <li *ng-for="#task of tasks" class="pure-menu-item" (change)="console.log('list changed')">{{task.title}}</li>
-    </ul>
+	<ul class="pure-menu-list">
+		<li *ng-for="#task of tasks" class="pure-menu-item">{{task.title}}</li>
+	</ul>
 
-    <p>Number of tasks: {{tasks.length}}</p>
+    <p>Number of tasks: {{nrOfTasks}}</p>
 
     <form class="pure-form">
         <fieldset>
@@ -17,5 +17,3 @@
         </fieldset>
     </form>
 </div>
-
-<p [hidden]="!message" class="message-container">{{message}}</p>
