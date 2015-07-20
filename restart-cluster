@@ -9,6 +9,8 @@ logdo() {
   "$@"
 }
 
+to_start=""
+
 restart_cluster() {
   n=$1
   name=$2
@@ -17,22 +19,39 @@ restart_cluster() {
     instance="$(echo ${name}_$i | sed s@/@_@g)"
     logdo docker stop $instance || echo Failed to stop container $instance, continuing
     logdo docker rm $instance || echo Failed to remove container $instance, continuing
-    logdo docker run --name $instance -dti "$@" $name
+    logdo docker create --name $instance -ti "$@" $name
+    # TODO: rename root
+    if test true = "$root"
+    then
+        to_start="$to_start $instance"
+    fi
   done
 }
+
+test -d /data/poc_mongodb || (echo "Create directory /data/poc_mongodb first: mkdir -p /data/poc_mongodb;"; exit 1)
 
 # decreasing the numbers requires manual intervention...
 
 # always start only one...
-restart_cluster 1 poc/mongodb
+restart_cluster 1 poc/mongodb -v /data/poc_mongodb:/data/db
 
-restart_cluster 1 poc/jdbc-auth-service  # TODO link with some sql db
-restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
-restart_cluster 1 poc/task-service --link poc_mongodb_1:mongodb
+root=true restart_cluster 1 poc/jdbc-auth-service  # TODO link with some sql db
+root=true restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
+root=true restart_cluster 1 poc/task-service --link poc_mongodb_1:mongodb
 
 # requires public port, so only one
-restart_cluster 1 poc/backend -p 8080:8080
+root=true restart_cluster 1 poc/backend -p 8080:8080
 
 docker stop poc_frontend_1 || true
 docker rm poc_frontend_1 || true
-docker run -itd -p 80:3000 --name poc_frontend_1 poc/frontend 'http://inn-o-as1.lan.inology.nl:8080'
+docker create -it -p 80:3000 --name poc_frontend_1 poc/frontend 'http://inn-o-as1.lan.inology.nl:8080'
+to_start="$to_start poc_frontend_1"
+
+logdo docker start poc_mongodb_1
+echo "Giving docker/mongo some slack..."
+sleep 5
+
+logdo docker start $to_start
+#for container in $to_start
+#do  logdo docker start $container
+#done
