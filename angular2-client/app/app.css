@@ -3,6 +3,10 @@ body {
     font-family: "Ubuntu", serif;
 }
 
+h1, h2 {
+    color: #666965;
+}
+
 .pure-u, h2 {
     font-family: "Ubuntu", sans-serif;
 }
@@ -23,6 +27,10 @@ dl dt {
 
 dl dd {
     margin-bottom: 0.5em;
+}
+
+app article {
+    background-color: #eeeeee;
 }
 
 .message-container {
