@@ -1,4 +1,5 @@
 import {Component, View, NgFor, NgIf} from 'angular2/angular2';
+import {formDirectives} from 'angular2/forms';
 
 import {AuthenticationService} from '../../services/AuthenticationService';
 import {Task} from 'components/tasks/task';
@@ -7,7 +8,7 @@ import {EventManager} from "utils/eventbus/EventManager";
 
 @Component({
     selector: 'component-2',
-    viewInjector: [AuthenticationService, TaskServiceImpl]
+    viewInjector: [AuthenticationService, TaskServiceImpl, formDirectives]
 })
 @View({
     templateUrl: './components/tasks/tasks.html?v=<%= VERSION %>',
@@ -15,6 +16,8 @@ import {EventManager} from "utils/eventbus/EventManager";
 })
 export class Tasks {
     tasks: Array<Task>;
+	taskTitle: string;
+	taskId: number;
 	nrOfTasks: number;
     private eventManager: EventManager = EventManager.getInstance();
 
@@ -34,18 +37,38 @@ export class Tasks {
         }
     }
 
-    addTask(event, newname) {
+    saveTask(event, taskTitle: string, taskId: number) {
         event.preventDefault(); // prevent native page refresh
-        let newTask = new Task(newname.value);
-        this.taskService.addTask(newTask).then((obj) => {
-	        console.dir(obj);
-            newTask.setId(obj.actionResult._id);
-	        console.log("before push: " + this.tasks.length);
-	        this.nrOfTasks = this.tasks.push(newTask);
-	        this.eventManager.publish("tasksResult", [true, "Added task '" + newTask.getId() + "'"]);
-            newname.value = "";
-        }).catch((error) => {
-	        this.eventManager.publish("tasksResult", [false, error.message]);
-        });
+        if (taskId == null) {
+	        let newTask = new Task(taskTitle);
+	        this.taskService.addTask(newTask).then((obj) => {
+		        console.dir(obj);
+		        newTask.setId(obj.actionResult._id);
+		        console.log("before push: " + this.tasks.length);
+		        this.nrOfTasks = this.tasks.push(newTask);
+		        this.eventManager.publish("tasksResult", [true, "Added task '" + newTask.getId() + "'"]);
+		        this.taskTitle = null;
+		        this.taskId = null;
+	        }).catch((error) => {
+		        this.eventManager.publish("tasksResult", [false, error.message]);
+	        });
+        } else {
+	        let updatedTask = new Task(taskTitle);
+	        this.taskService.updateTask(updatedTask).then((obj) => {
+		        this.eventManager.publish("tasksResult", [true, "Updated task '" + updatedTask.getId() + "'"]);
+		        this.taskTitle = null;
+		        this.taskId = null;
+	        }).catch((error) => {
+		        this.eventManager.publish("tasksResult", [false, error.message]);
+	        });
+        }
+    }
+
+	// TODO use a modelobject in the form to also load _id
+    showTask(event, taskTitle: string, taskId: number) {
+        event.preventDefault(); // prevent native page refresh
+	    console.log("showTask with id: " + taskId);
+	    this.taskTitle = taskTitle;
+	    this.taskId = taskId;
     }
 }

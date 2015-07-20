@@ -1,7 +1,7 @@
 /// <reference path="../typings/custom.system.d.ts" />
 System.config({
     baseURL: '/',
-    paths: { '*': '*.js?v=0.7.0' }
+    paths: { '*': '*.js?v=0.7.1' }
 });
 System.import('./app')
     .catch(function (e) { return console.error(e, 'Report this error'); });

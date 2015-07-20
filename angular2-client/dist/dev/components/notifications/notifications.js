@@ -30,7 +30,7 @@ var Notifications = (function () {
             selector: 'app-notifications'
         }),
         angular2_1.View({
-            templateUrl: './components/notifications/notifications.html?v=0.7.0',
+            templateUrl: './components/notifications/notifications.html?v=0.7.1',
             directives: [angular2_1.NgFor]
         }), 
         __metadata('design:paramtypes', [])

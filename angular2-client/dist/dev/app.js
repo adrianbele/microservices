@@ -52,7 +52,7 @@ var App = (function () {
             { path: '/settings', component: settings_1.Settings, as: 'settings' }
         ]),
         angular2_1.View({
-            templateUrl: './app.html?v=0.7.0',
+            templateUrl: './app.html?v=0.7.1',
             directives: [router_1.RouterOutlet, router_1.RouterLink, notifications_1.Notifications]
         }), 
         __metadata('design:paramtypes', [AuthenticationService_1.AuthenticationService, router_1.Router])

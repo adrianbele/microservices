@@ -18,10 +18,10 @@ a.pure-menu-link:active, a.pure-menu-link:hover, a.pure-menu-link:focus {
 
 dl dt {
     font-style: italic;
+    font-weight: bold;
 }
 
-dl dh {
-    font-weight: bold;
+dl dd {
     margin-bottom: 0.5em;
 }
 
@@ -37,10 +37,21 @@ dl dh {
     border-radius: 0.5em;
 }
 
+.message-container button {
+    margin-left: 0.5em;
+}
+
 #progress-indicator {
     position: absolute;
     top: 3em;
     font-size: 2em;
     width: 100%;
     text-align: center;
+}
+
+.task-list li {
+    margin-bottom: 0.5em;
+}
+.task-list li button {
+    width: 50%;
 }

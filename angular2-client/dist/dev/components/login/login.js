@@ -50,7 +50,7 @@ var Login = (function () {
             viewInjector: [AuthenticationService_1.AuthenticationService]
         }),
         angular2_1.View({
-            templateUrl: './components/login/login.html?v=0.7.0',
+            templateUrl: './components/login/login.html?v=0.7.1',
         }), 
         __metadata('design:paramtypes', [AuthenticationService_1.AuthenticationService])
     ], Login);

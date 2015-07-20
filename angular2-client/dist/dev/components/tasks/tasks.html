@@ -1,8 +1,10 @@
 <div [hidden]="!authenticationService.isLoggedIn()">
     <h2>Tasks</h2>
 
-	<ul class="pure-menu-list">
-		<li *ng-for="#task of tasks" class="pure-menu-item">{{task.title}}</li>
+	<ul class="pure-menu-list task-list">
+		<li *ng-for="#task of tasks" class="pure-menu-item">
+			<button class="pure-button" (click)="showTask($event, task.title, task._id)">{{task.title}}</button>
+        </li>
 	</ul>
 
     <p>Number of tasks: {{nrOfTasks}}</p>
@@ -11,9 +13,10 @@
         <fieldset>
             <legend>Add a task</legend>
 
-            <input #newname placeholder="description ..." />
+            <input [(ng-model)]="taskTitle" placeholder="description ..." />
+			<input [(ng-model)]="taskId" placeholder="id ..." />
 
-            <button (click)="addTask($event, newname)" class="pure-button pure-button-primary">add</button>
+            <button (click)="saveTask($event, taskTitle, taskId)" class="pure-button pure-button-primary">add</button>
         </fieldset>
     </form>
 </div>
