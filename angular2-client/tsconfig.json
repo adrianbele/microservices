@@ -12,10 +12,10 @@
     },
     "files": [
         "./app/app.ts",
-        "./app/components/about/about.ts",
-        "./app/components/home/home.ts",
+        "./app/components/*/*.ts",
+        "./app/utils/*.ts",
         "./app/init.ts",
-        "./app/services/NameList.ts",
+        "./app/services/*/*.ts",
         "./typings/angular2/angular2.d.ts",
         "./typings/angular2/router.d.ts",
         "./typings/custom.system.d.ts",
