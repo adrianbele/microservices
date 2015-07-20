@@ -18,10 +18,10 @@ a.pure-menu-link:active, a.pure-menu-link:hover, a.pure-menu-link:focus {
 
 dl dt {
     font-style: italic;
+    font-weight: bold;
 }
 
 dl dd {
-    font-weight: bold;
     margin-bottom: 0.5em;
 }
 
