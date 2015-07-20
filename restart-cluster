@@ -31,4 +31,4 @@ restart_cluster 1 poc/backend -p 8080:8080
 
 docker stop poc_frontend_1 || true
 docker rm poc_frontend_1 || true
-docker run -itd -p 80:3000 --name poc_frontend_0 poc/frontend 'http://inn-o-as1.lan.inology.nl:8080'
+docker run -itd -p 80:3000 --name poc_frontend_1 poc/frontend 'http://inn-o-as1.lan.inology.nl:8080'
