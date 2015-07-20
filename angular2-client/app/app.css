@@ -3,6 +3,10 @@ body {
     font-family: "Ubuntu", serif;
 }
 
+h1, h2 {
+    color: #666965;
+}
+
 .pure-u, h2 {
     font-family: "Ubuntu", sans-serif;
 }
@@ -18,11 +22,15 @@ a.pure-menu-link:active, a.pure-menu-link:hover, a.pure-menu-link:focus {
 
 dl dt {
     font-style: italic;
+    font-weight: bold;
 }
 
-dl dh {
-    font-weight: bold;
+dl dd {
     margin-bottom: 0.5em;
+}
+
+app article {
+    background-color: #eeeeee;
 }
 
 .message-container {
@@ -35,6 +43,10 @@ dl dh {
     font-size: 0.8em;
     color: black;
     border-radius: 0.5em;
+}
+
+.message-container button {
+    margin-left: 0.8em;
 }
 
 #progress-indicator {
