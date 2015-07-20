@@ -22,9 +22,13 @@ restart_cluster() {
 }
 
 # decreasing the numbers requires manual intervention...
+
+# always start only one...
+restart_cluster 1 poc/mongodb
+
 restart_cluster 1 poc/jdbc-auth-service  # TODO link with some sql db
-restart_cluster 1 poc/data-initializer-service --link mongodb
-restart_cluster 1 poc/task-service --link mongodb
+restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
+restart_cluster 1 poc/task-service --link poc_mongodb_1:mongodb
 
 # requires public port, so only one
 restart_cluster 1 poc/backend -p 8080:8080
