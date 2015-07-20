@@ -3,7 +3,7 @@
  * Based on: http://csharperimage.jeremylikness.com/2012/11/building-javascript-event-aggregator.html
  */
 
-import {Message} from "utils/eventbus/MessageInterface";
+import {Message} from "Message";
 import {MessageImpl} from "utils/eventbus/MessageImpl";
 import {Subscription} from "utils/eventbus/Subscription";
 

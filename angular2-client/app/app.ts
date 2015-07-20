@@ -7,15 +7,15 @@ import {Home} from './components/home/home';
 import {Tasks} from './components/tasks/tasks';
 import {Login} from './components/login/login';
 import {Settings} from './components/settings/settings';
-
 import {Notifications} from './components/notifications/notifications';
 
 import {AuthenticationService} from 'services/AuthenticationService';
+import {LoggingService} from 'services/LoggingService';
 import {EventManager} from "utils/eventbus/EventManager";
 
 @Component({
     selector: 'app',
-    viewInjector: [AuthenticationService]
+    viewInjector: [AuthenticationService, LoggingService]
 })
 @RouteConfig([
     { path: '/', component: Home, as: 'home' },
@@ -32,12 +32,19 @@ class App {
     public loggedIn: boolean;
 	private eventManager: EventManager = EventManager.getInstance();
 
-    constructor(public authenticationService: AuthenticationService, public router: Router) {
+    constructor(public authenticationService: AuthenticationService, public router: Router, public loggingService: LoggingService) {
         this.loggedIn = authenticationService.isLoggedIn();
-        this.eventManager.subscribe("authenticationStateChange", (event: Array<any>) => {
+
+	    this.eventManager.subscribe("authenticationStateChange", (event: Array<any>) => {
             this.loggedIn = event[0];
             console.log("App caught event, loggedIn: " + event[0]);
+		    loggingService.log(event);
         });
+
+        this.eventManager.subscribe("tasksResult", (event: Array<any>) => {
+	        loggingService.log(event);
+        });
+
         console.log("app.ts finished constructor");
     }
 

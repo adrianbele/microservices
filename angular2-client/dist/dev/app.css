@@ -3,12 +3,12 @@ body {
     font-family: "Ubuntu", serif;
 }
 
-.pure-u, h2 {
-    font-family: "Ubuntu", sans-serif;
+h1, h2 {
+    color: #666965;
 }
 
-form fieldset legend {
-    font-weight: bold;
+.pure-u, h2 {
+    font-family: "Ubuntu", sans-serif;
 }
 
 a.pure-menu-link:active, a.pure-menu-link:hover, a.pure-menu-link:focus {
@@ -23,6 +23,10 @@ dl dt {
 
 dl dd {
     margin-bottom: 0.5em;
+}
+
+app article {
+    background-color: #eeeeee;
 }
 
 .message-container {

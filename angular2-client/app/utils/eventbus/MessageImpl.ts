@@ -2,7 +2,7 @@
  * Created by tvalentijn on 7/2/15.
  */
 
-import {Message} from "utils/eventbus/MessageInterface";
+import {Message} from "Message";
 import {Subscription} from "utils/eventbus/Subscription";
 
 export class MessageImpl implements Message {

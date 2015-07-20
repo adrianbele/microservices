@@ -1,0 +1,11 @@
+{
+  "name": "rest-server",
+  "description": "rest-server for testing angular2-client",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "express": "latest",
+    "mongoose": "latest"
+  }
+}
