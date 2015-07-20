@@ -36,7 +36,7 @@ test -d /data/poc_mongodb || (echo "Create directory /data/poc_mongodb first: mk
 restart_cluster 1 poc/mongodb -v /data/poc_mongodb:/data/db
 
 root=true restart_cluster 1 poc/jdbc-auth-service  # TODO link with some sql db
-root=true restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
+# root=true restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
 root=true restart_cluster 1 poc/task-service --link poc_mongodb_1:mongodb
 
 # requires public port, so only one
