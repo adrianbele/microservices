@@ -11,10 +11,6 @@ h1, h2 {
     font-family: "Ubuntu", sans-serif;
 }
 
-form fieldset legend {
-    font-weight: bold;
-}
-
 a.pure-menu-link:active, a.pure-menu-link:hover, a.pure-menu-link:focus {
     background: #ffb50b none repeat scroll 0 0;
     color: #5e625d;

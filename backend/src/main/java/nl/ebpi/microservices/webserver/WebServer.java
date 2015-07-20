@@ -4,6 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.ReplyException;
@@ -59,13 +60,22 @@ public class WebServer extends AbstractVerticle {
     }
 
     private void taskHandler(RoutingContext ctx) {
-        JsonObject request = new JsonObject();
-        if(null != ctx.getBodyAsJson()) {
-            request = ctx.getBodyAsJson();
-        }
-        request.put("user_id", "1");
-       // System.out.println(ctx.user());
-       vertx.eventBus().send("task-service-address", request, new DeliveryOptions().addHeader("action", ctx.request().method().name()), resultHandler(ctx));
+        HttpServerRequest request = ctx.request();
+        Buffer body = Buffer.buffer();
+        request.handler(buffer -> {
+            LOGGER.info("taskHandler received a chunk of the body of length " + buffer.length());
+            body.appendBuffer(buffer);
+        });
+        request.endHandler(v -> {
+            LOGGER.info("taskHandler received Full body, length = " + body.length());
+            JsonObject task = new JsonObject();
+            if (body.length() > 0) {
+                task = new JsonObject(body.toString());
+                LOGGER.info("Body as json: " + task.toString());
+                task.put("user_id", "1");
+            }
+            vertx.eventBus().send("task-service-address", task, new DeliveryOptions().addHeader("action", request.method().name()), resultHandler(ctx));
+        });
     }
 
     private Handler<AsyncResult<Message<Object>>> resultHandler(RoutingContext ctx) {

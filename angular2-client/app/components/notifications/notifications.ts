@@ -1,10 +1,8 @@
 import {Component, View, NgFor} from 'angular2/angular2';
 import {EventManager} from "utils/eventbus/EventManager";
-//import {AuthenticationService} from '../../services/AuthenticationService';
 
 @Component({
 	selector: 'app-notifications'
-	//,viewInjector: [AuthenticationService, TaskService]
 })
 @View({
 	templateUrl: './components/notifications/notifications.html?v=<%= VERSION %>',
