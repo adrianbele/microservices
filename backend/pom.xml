@@ -67,21 +67,6 @@
             <artifactId>hsqldb</artifactId>
             <version>2.3.2</version>
         </dependency>
-        <dependency>
-            <groupId>nl.ebpi.microservices</groupId>
-            <artifactId>jdbc-auth-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.ebpi.microservices</groupId>
-            <artifactId>data-initializer-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.ebpi.microservices</groupId>
-           <artifactId>task-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
     </dependencies>
 
