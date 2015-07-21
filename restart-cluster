@@ -1,5 +1,10 @@
 #!/bin/sh
 
+front_end_public_port=80
+back_end_public_port=8080
+back_end_public_host=inn-o-as1.lan.inology.nl
+back_end_public_scheme=http
+
 # this evil script starts a hardcoded cluster
 
 set -e
@@ -37,14 +42,14 @@ restart_cluster 1 poc/mongodb -v /data/poc_mongodb:/data/db
 
 root=true restart_cluster 1 poc/jdbc-auth-service  # TODO link with some sql db
 # root=true restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
-root=true restart_cluster 1 poc/task-service --link poc_mongodb_1:mongodb
+root=true restart_cluster 3 poc/task-service --link poc_mongodb_1:mongodb
 
 # requires public port, so only one
-root=true restart_cluster 1 poc/backend -p 8080:8080
+root=true restart_cluster 1 poc/backend -p $back_end_public_port:8080
 
 docker stop poc_frontend_1 || true
 docker rm poc_frontend_1 || true
-docker create -it -p 80:3000 --name poc_frontend_1 poc/frontend 'http://inn-o-as1.lan.inology.nl:8080'
+docker create -it -p $front_end_public_port:3000 --name poc_frontend_1 poc/frontend "$back_end_public_scheme://$back_end_public_host:$back_end_public_port"
 to_start="$to_start poc_frontend_1"
 
 logdo docker start poc_mongodb_1
