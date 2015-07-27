@@ -1,9 +1,16 @@
-####
-# sudo docker build -t microservices/angular-service .
-# sudo docker run  -p 80:3000 -t -i microservices/angular-service http://localhost:8080
-####
-FROM snoyberg/warp
+FROM haskell:7.8
+
+RUN cabal update
+
+ADD static-server/static.cabal /build/static.cabal
+RUN cd /build && cabal install --only-dependencies -j4
+ADD static-server /build
+RUN cd /build && cabal install
+ENV PATH /root/.cabal/bin:$PATH
+WORKDIR /www
+EXPOSE 3000
+CMD static
 COPY dep/busybox /usr/bin/busybox
 COPY entrypoint /
 ENTRYPOINT ["/entrypoint"]
-COPY dist/dev /var/www/html
+COPY dist/dev /www

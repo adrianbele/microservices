@@ -1,0 +1,16 @@
+Name: static-file-server
+Version: 0.1
+Synopsis: Static file server with 404 catch-all
+Description: 
+License: AllRightsReserved
+Author: EBPI
+Maintainer: robert.hensing@inology.nl
+Stability: Experimental
+Category: Web
+Build-type: Simple
+Cabal-version: >=1.2
+
+Executable static
+  hs-source-dirs: src
+  main-is: Main.hs
+  build-depends: base, wai-extra == 3.0.8.2, wai == 3.0.3.0, wai-util == 0.8, wai-middleware-static == 0.7.0.1, warp == 3.0.13.1, http-types == 0.8.6
