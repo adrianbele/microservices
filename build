@@ -32,6 +32,10 @@ set -ex
   mvn clean install
   docker build -t poc/task-service .
 )
+( cd monitoring-service
+  mvn clean install
+  docker build -t poc/monitoring-service .
+)
 ( cd mongodb-container
   docker build -t poc/mongodb .
 )
