@@ -5,8 +5,8 @@ var StaticHandler = require("vertx-web-js/static_handler");
 
 
 var service = MetricsService.create(vertx);
-service
-//console.log(vertx.isMetricsEnabled());
+
+console.log("isMetricsEnabled: " + vertx.isMetricsEnabled());
 var router = Router.router(vertx);
 
 // Allow outbound traffic to the news-feed address
@@ -30,8 +30,6 @@ httpServer.requestHandler(router.accept).listen(8383);
 // Send a metrics events every second
 vertx.setPeriodic(1000, function (t) {
   var metrics = service.getMetricsSnapshot(vertx.eventBus());
-
+  console.log("Periodic publish metrics running...");
   vertx.eventBus().publish("metrics", metrics);
 });
-
-

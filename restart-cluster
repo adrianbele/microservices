@@ -1,6 +1,7 @@
 #!/bin/sh
 
 front_end_public_port=80
+monitoring_public_port=8081
 back_end_public_port=8080
 back_end_public_host=inn-o-as1.lan.inology.nl
 back_end_public_scheme=http
@@ -38,14 +39,15 @@ test -d /data/poc_mongodb || (echo "Create directory /data/poc_mongodb first: mk
 # decreasing the numbers requires manual intervention...
 
 # always start only one...
-restart_cluster 1 poc/mongodb -v /data/poc_mongodb:/data/db
+### restart_cluster 1 poc/mongodb -v /data/poc_mongodb:/data/db
 
-root=true restart_cluster 1 poc/jdbc-auth-service  # TODO link with some sql db
-# root=true restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
-root=true restart_cluster 3 poc/task-service --link poc_mongodb_1:mongodb
+### root=true restart_cluster 1 poc/jdbc-auth-service  # TODO link with some sql db
+### # root=true restart_cluster 1 poc/data-initializer-service --link poc_mongodb_1:mongodb
+### root=true restart_cluster 3 poc/task-service --link poc_mongodb_1:mongodb
+root=true restart_cluster 1 poc/monitoring-service -p $monitoring_public_port:8383
 
 # requires public port, so only one
-root=true restart_cluster 1 poc/backend -p $back_end_public_port:8080
+### root=true restart_cluster 1 poc/backend -p $back_end_public_port:8080
 
 docker stop poc_frontend_1 || true
 docker rm poc_frontend_1 || true
