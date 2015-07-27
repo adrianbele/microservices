@@ -30,7 +30,6 @@ export class Login {
                     (_) => this.checkLoggedInStatus(),
                     1000 * 60 * 5
                 );
-                navigate("/tasks")
             } else {
                 this.authenticationService.logOut();
                 this.eventManager.publish("authenticationStateChange", [false, "server did not send correct token"]);
