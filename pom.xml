@@ -25,6 +25,7 @@
         <module>task-service</module>
         <module>backend</module>
         <module>monitoring-service</module>
+        <module>monitoring-service-standalone-demo</module>
     </modules>
 
 
