@@ -23,7 +23,7 @@ export class Notifications {
 		});
 	}
 
-	close() {
+	close(): void {
 		this.message = null;
 	}
 }

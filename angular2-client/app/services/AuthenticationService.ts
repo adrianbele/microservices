@@ -7,7 +7,7 @@ export class AuthenticationService {
         console.log("AuthenticationService constructed with loggedIn [" + this.isLoggedIn() + "] based on localStorage");
     }
 
-    isLoggedIn() {
+    isLoggedIn(): boolean {
         let token = localStorage.getItem('jwt');
         if(token && !this.isExpired(token)) {
             return true;
@@ -15,12 +15,12 @@ export class AuthenticationService {
         return false;
     }
 
-    logIn(token: any) {
+    logIn(token: any): void{
         console.log("AuthenticationService logIn (set jwt in localStorage)");
         localStorage.setItem("jwt", token);
     }
 
-    logOut() {
+    logOut(): void {
         console.log("AuthenticationService logOut (remove jwt from localStorage)");
         localStorage.removeItem('jwt');
     }

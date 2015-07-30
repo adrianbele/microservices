@@ -1,26 +1,29 @@
 
-// TODO make string an optional parameter with ''?''
+// TODO make token an optional parameter with ''?''
 
 export const $http = {
     get: function(url: string, token: string) {
-        return _sendRequest(url, null, 'GET', token);
+        return sendRequest(url, null, 'GET', token);
     },
     post: function(url: string, payload: any, token: string) {
-        return _sendRequest(url, payload, 'POST', token);
+        return sendRequest(url, payload, 'POST', token);
     },
     put: function(url: string, payload: any, token: string) {
-        return _sendRequest(url, payload, 'PUT', token);
+        return sendRequest(url, payload, 'PUT', token);
     },
     delete: function(url: string, payload: any, token: string) {
-        return _sendRequest(url, null, 'DELETE', token);
+        return sendRequest(url, null, 'DELETE', token);
     }
 }
 
 /**
-* @param payload is a JavaScript/JSON Object
-* @param type is the HTTP verb as String
+ * @param url is the endpoint to send
+ * @param payLoad is a JavaScript/JSON Object
+ * @param type is the HTTP verb as String
+ * @param token is used for authentication
+ * @returns a Promise that will be called when response is received
 */
-function _sendRequest(url: string, payLoad: any, type: string, token: string): Promise<any> {
+function sendRequest(url: string, payLoad: any, type: string, token: string): Promise<any> {
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
         req.timeout = 10 * 1000;

@@ -1,7 +1,5 @@
 import {Component, View, NgFor, NgIf} from 'angular2/angular2';
 
-//import {formDirectives} from 'angular2/forms';
-
 import {AuthenticationService} from '../../services/AuthenticationService';
 import {Task} from 'components/tasks/task';
 import {TaskServiceImpl} from '../../services/TaskService';
@@ -36,7 +34,7 @@ export class Tasks {
         }
     }
 
-    addTask(event, newname) {
+    addTask(event: any, newname: any): void {
         event.preventDefault(); // prevent native page refresh
         let newTask = new Task(newname.value);
         this.taskService.addTask(newTask).then((obj) => {
