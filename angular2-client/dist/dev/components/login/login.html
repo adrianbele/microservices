@@ -1,5 +1,5 @@
 
-<form class="pure-form pure-form-stacked">
+<form class="pure-form pure-form-stacked" [hidden]="authenticationService.isLoggedIn()">
     <fieldset>
         <h2>Login to the system</h2>
         <label for="username">username</label>

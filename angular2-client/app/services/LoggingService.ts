@@ -7,7 +7,7 @@ export class LoggingService {
 
 	// TODO new Relic via
 	// NREUM.info={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",licenseKey:"f49c0d1ad1",applicationID:"9104200",sa:1,agent:"js-agent.newrelic.com/nr-632.min.js"}
-	private LOG_HOST: string = "http://localhost:8088";
+	private LOG_HOST: string = "http://localhost:8080";
 
 	public log(event: any) : void {
 		let token = localStorage.getItem("jwt");

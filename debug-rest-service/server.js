@@ -32,12 +32,17 @@ server.post("/api/tasks/tim", function(req, res) {
     return res.send(obj);
 });
 
+server.put("/api/tasks/tim", function(req, res) {
+    console.log(req.body);
+    return res.end();
+});
+
 server.post("/api/log", jsonParser, function(req, res) {
     console.log(req.body);
     return res.end();
 });
 
-var port = 8088;
+var port = 8080;
 
 server.listen(port);
 console.log("Listening on port " + port);

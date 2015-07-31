@@ -5,6 +5,7 @@ import {Task} from '../components/tasks/task';
 export interface TaskService {
 	getTasks(): Promise<any>;
 	addTask(task:Task): Promise<any>;
+	updateTask(task: Task): Promise<any>;
 }
 
 export class TaskServiceImpl implements TaskService {
@@ -24,6 +25,15 @@ export class TaskServiceImpl implements TaskService {
 	public addTask(task: Task):Promise<any> {
 		let token = localStorage.getItem("jwt");
 		return $http.post(REST_HOST + "/api/tasks/tim", task, token);
+	}
+
+	/**
+	 * @param task is a Task object
+	 * @returns server _id of newly created task
+	 */
+	public updateTask(task: Task): Promise<any> {
+		let token = localStorage.getItem("jwt");
+		return $http.put(REST_HOST + "/api/tasks/tim", task, token);
 	}
 }
 
@@ -54,6 +64,14 @@ export class TaskServiceOfflineImpl implements TaskService {
 		return new Promise(
 			function(resolve, reject) {
 				resolve({actionResult: {_id: nextId}});
+			}
+		);
+	}
+	public updateTask(task: Task): Promise<any> {
+		// TODO implement
+		return new Promise(
+			function(resolve, reject) {
+				resolve({actionResult: {_id: task._id}});
 			}
 		);
 	}

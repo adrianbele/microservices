@@ -10,7 +10,7 @@ export class Task {
     title: string
     user_id: number = 1;
 
-    constructor(title: string, _id?: number) {
+    constructor(title?: string, _id?: number) {
         this.title = title;
         this._id = _id;
     }

@@ -2,7 +2,7 @@
     <h2>Tasks</h2>
 
 	<ul class="pure-menu-list">
-		<li *ng-for="#task of tasks" class="pure-menu-item">{{task.title}}</li>
+		<li *ng-for="#atask of tasks" class="pure-menu-item" (click)="loadTask($event, atask)">{{atask.title}}</li>
 	</ul>
 
     <p>Number of tasks: {{nrOfTasks}}</p>
@@ -11,9 +11,9 @@
         <fieldset>
             <legend>Add a task</legend>
 
-            <input #newname placeholder="description ..." />
+            <input [(ng-model)]="task.title" placeholder="description ..." />
 
-            <button (click)="addTask($event, newname)" class="pure-button pure-button-primary">add</button>
+            <button (click)="saveTask($event)" class="pure-button pure-button-primary">save</button>
         </fieldset>
     </form>
 </div>
