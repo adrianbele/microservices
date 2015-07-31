@@ -66,4 +66,9 @@ export class Tasks {
 		console.log("load task " + task._id);
 		this.task = task;
 	}
+
+	clearTask(event: any): void {
+		event.preventDefault(); // prevent native page refresh
+		this.task = new Task();
+	}
 }
