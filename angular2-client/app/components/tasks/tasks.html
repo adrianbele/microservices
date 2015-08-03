@@ -14,7 +14,8 @@
             <input [(ng-model)]="task.title" placeholder="description ..." />
 
             <button (click)="saveTask($event)" class="pure-button pure-button-primary">save</button>
-			<button (click)="clearTask($event)" class="pure-button">clear</button>
+			<button (click)="clearTask($event)" [hidden]="task.title == null" class="pure-button">clear</button>
+			<button (click)="deleteTask($event)" [hidden]="task.title == null" class="pure-button">delete</button>
         </fieldset>
     </form>
 </div>

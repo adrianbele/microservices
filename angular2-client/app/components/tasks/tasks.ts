@@ -71,4 +71,23 @@ export class Tasks {
 		event.preventDefault(); // prevent native page refresh
 		this.task = new Task();
 	}
+
+	deleteTask(event: any): void {
+		event.preventDefault(); // prevent native page refresh
+		this.taskService.deleteTask(this.task).then((obj) => {
+			this.eventManager.publish("tasksResult", [true, "Deleted task '" + this.task._id + "'"]);
+			// findIndex does not work on Task[]
+			// this.tasks.splice(this.tasks.findIndex(_task => _task._id == this.task._id));
+			for (let i = 0, len = this.tasks.length; i < len; i++) {
+				let _task = this.tasks[i];
+				if (_task._id == this.task._id) {
+					console.log("delete task with id " + this.task._id + ", " + i);
+					this.tasks.splice(i);
+				}
+			}
+			this.task = new Task();
+		}).catch((error) => {
+			this.eventManager.publish("tasksResult", [false, error.message]);
+		});
+	}
 }

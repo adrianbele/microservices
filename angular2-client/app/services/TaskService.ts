@@ -6,6 +6,7 @@ export interface TaskService {
 	getTasks(): Promise<any>;
 	addTask(task:Task): Promise<any>;
 	updateTask(task: Task): Promise<any>;
+	deleteTask(task: Task): Promise<any>;
 }
 
 export class TaskServiceImpl implements TaskService {
@@ -29,11 +30,20 @@ export class TaskServiceImpl implements TaskService {
 
 	/**
 	 * @param task is a Task object
-	 * @returns server _id of newly created task
+	 * @returns server _id of updated task
 	 */
 	public updateTask(task: Task): Promise<any> {
 		let token = localStorage.getItem("jwt");
 		return $http.put(REST_HOST + "/api/tasks/tim", task, token);
+	}
+
+	/**
+	 * @param task is a Task object
+	 * @returns server _id of deleted task
+	 */
+	public deleteTask(task: Task): Promise<any> {
+		let token = localStorage.getItem("jwt");
+		return $http.delete(REST_HOST + "/api/tasks/tim", task, token);
 	}
 }
 
@@ -68,6 +78,14 @@ export class TaskServiceOfflineImpl implements TaskService {
 		);
 	}
 	public updateTask(task: Task): Promise<any> {
+		// TODO implement
+		return new Promise(
+			function(resolve, reject) {
+				resolve({actionResult: {_id: task._id}});
+			}
+		);
+	}
+	public deleteTask(task: Task): Promise<any> {
 		// TODO implement
 		return new Promise(
 			function(resolve, reject) {
